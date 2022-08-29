@@ -1,8 +1,6 @@
 package com.cocosmaj.BellBooks.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -21,6 +19,12 @@ public class SpecialRequest {
     private Date specialRequestDate;
 
     private Date letterMailedDate;
+
+    @Enumerated(value= EnumType.STRING)
+    private Category category;
+
+    @Enumerated(value=EnumType.STRING)
+    private SpecialRequestStatus status;
 
     public void setId(Long id) {
         this.id = id;
@@ -70,5 +74,21 @@ public class SpecialRequest {
 
     public Date getLetterMailedDate(){
         return letterMailedDate;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public SpecialRequestStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(SpecialRequestStatus status) {
+        this.status = status;
     }
 }

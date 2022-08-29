@@ -3,9 +3,9 @@ package com.cocosmaj.BellBooks.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name ="facility", uniqueConstraints = {
-        @UniqueConstraint(name = "uniqueFacilities", columnNames = {
-                "name", "additionalInfo", "street", "state", "zip"
+@Table(name="facility", uniqueConstraints = {
+        @UniqueConstraint(name="uniqueFacility", columnNames = {
+                "name", "street", "state", "zip"
         })
 })
 public class Facility {
@@ -14,19 +14,19 @@ public class Facility {
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String name;
 
     private String additionalInfo;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String street;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private State state;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length=10)
     private String zip;
 
     public void setId(Long id) {

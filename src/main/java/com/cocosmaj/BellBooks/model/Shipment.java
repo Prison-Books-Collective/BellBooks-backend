@@ -1,7 +1,5 @@
 package com.cocosmaj.BellBooks.model;
 
-import org.hibernate.criterion.NotEmptyExpression;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -20,6 +18,9 @@ public class Shipment {
 
     @OneToMany
     private List<Note> notes;
+
+    @OneToMany
+    private List<PackageContent> content;
 
     public Long getId() {
         return id;

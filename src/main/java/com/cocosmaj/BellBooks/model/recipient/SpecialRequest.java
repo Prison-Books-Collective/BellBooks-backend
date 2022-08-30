@@ -1,4 +1,4 @@
-package com.cocosmaj.BellBooks.model;
+package com.cocosmaj.BellBooks.model.recipient;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -21,7 +21,7 @@ public class SpecialRequest {
     private Date letterMailedDate;
 
     @Enumerated(value= EnumType.STRING)
-    private Category category;
+    private SpecialRequestCategory category;
 
     @Enumerated(value=EnumType.STRING)
     private SpecialRequestStatus status;
@@ -76,11 +76,11 @@ public class SpecialRequest {
         return letterMailedDate;
     }
 
-    public Category getCategory() {
+    public SpecialRequestCategory getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(SpecialRequestCategory category) {
         this.category = category;
     }
 

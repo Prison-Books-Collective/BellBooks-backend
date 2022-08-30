@@ -1,9 +1,11 @@
-package com.cocosmaj.BellBooks.service;
+package com.cocosmaj.BellBooks.service.recipient;
 
-import com.cocosmaj.BellBooks.model.Facility;
+import com.cocosmaj.BellBooks.model.recipient.Facility;
 import com.cocosmaj.BellBooks.repository.FacilityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class FacilityService {
@@ -17,5 +19,9 @@ public class FacilityService {
     public Facility addFacility(Facility facility) {
 
         return facilityRepository.save(facility);
+    }
+
+    public List<Facility> getAllFacilities() {
+        return (List) facilityRepository.findAll();
     }
 }

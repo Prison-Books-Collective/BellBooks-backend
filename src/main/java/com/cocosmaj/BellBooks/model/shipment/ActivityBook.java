@@ -1,4 +1,4 @@
-package com.cocosmaj.BellBooks.model;
+package com.cocosmaj.BellBooks.model.shipment;
 
 import javax.persistence.*;
 

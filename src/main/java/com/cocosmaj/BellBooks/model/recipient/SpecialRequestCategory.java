@@ -1,6 +1,6 @@
-package com.cocosmaj.BellBooks.model;
+package com.cocosmaj.BellBooks.model.recipient;
 
-public enum Category {
+public enum SpecialRequestCategory {
     VOCATIONAL,
     EDUCATIONAL,
     CAREER_GROWTH,

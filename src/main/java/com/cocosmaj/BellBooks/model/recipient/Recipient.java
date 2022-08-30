@@ -1,4 +1,7 @@
-package com.cocosmaj.BellBooks.model;
+package com.cocosmaj.BellBooks.model.recipient;
+
+import com.cocosmaj.BellBooks.model.shipment.Shipment;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.List;
@@ -21,7 +24,7 @@ public class Recipient {
     @ManyToOne
     private Facility facility;
 
-    @OneToMany
+    @OneToMany(mappedBy = "recipient")
     private List<Shipment> shipments;
 
     @OneToMany
@@ -70,6 +73,7 @@ public class Recipient {
         this.facility = facility;
     }
 
+    @JsonManagedReference
     public List<Shipment> getShipments() {
         return shipments;
     }

@@ -1,14 +1,10 @@
-package com.cocosmaj.BellBooks.controller;
+package com.cocosmaj.BellBooks.controller.recipient;
 
-import com.cocosmaj.BellBooks.model.Facility;
-import com.cocosmaj.BellBooks.service.FacilityService;
-import org.apache.coyote.Response;
+import com.cocosmaj.BellBooks.model.recipient.Facility;
+import com.cocosmaj.BellBooks.service.recipient.FacilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
@@ -24,5 +20,10 @@ public class FacilityController {
     @PostMapping("/addFacility")
     public ResponseEntity addFacility(@RequestBody Facility facility){
         return ResponseEntity.ok(facilityService.addFacility(facility));
+    }
+
+    @GetMapping("/getAllFacilities")
+    public ResponseEntity getAllFacilities(){
+        return ResponseEntity.ok(facilityService.getAllFacilities());
     }
 }

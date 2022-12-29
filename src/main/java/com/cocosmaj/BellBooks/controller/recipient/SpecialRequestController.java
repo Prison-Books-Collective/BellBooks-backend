@@ -15,4 +15,16 @@ public class SpecialRequestController {
     public SpecialRequestController(@Autowired SpecialRequestService specialRequestService){
         this.specialRequestService = specialRequestService;
     }
+
+    //add
+
+    //update
+
+    //delete
+
+    //get special request by inmate
+
+    //get special request by id
+
+    //get all
 }

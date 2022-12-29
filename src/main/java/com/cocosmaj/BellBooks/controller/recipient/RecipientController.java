@@ -34,13 +34,36 @@ public class RecipientController {
     }
 
     @GetMapping("/getRecipient")
-    public ResponseEntity getRecipient(@RequestParam Long recipientId) {
+    public ResponseEntity getRecipient(@RequestParam Long id) {
         try {
-            return ResponseEntity.ok(this.recipientService.getRecipient(recipientId));
+            return ResponseEntity.ok(this.recipientService.getRecipient(id));
         } catch (RecipientNotFoundException exception){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
 
+    @GetMapping("/getAllRecipients")
+    public ResponseEntity getAllRecipients(){
+        return ResponseEntity.ok(this.recipientService.getAllRecipients());
+    }
+
+    @GetMapping("/getRecipientByAssignedId")
+    public ResponseEntity getRecipientByAssignedId(@RequestParam String assignedId){
+        try {
+            return ResponseEntity.ok(this.recipientService.getRecipientByAssignedId(assignedId));
+        } catch (RecipientNotFoundException exception){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/deleteRecipient")
+    public ResponseEntity deleteRecipient(@RequestParam Long id){
+        try{
+            this.recipientService.deleteRecipient(id);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (RecipientNotFoundException exception){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }

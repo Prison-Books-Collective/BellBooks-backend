@@ -1,4 +1,4 @@
 package com.cocosmaj.BellBooks.exception;
 
-public class RecipientNotFoundException extends Throwable {
+public class RecipientNotFoundException extends Exception {
 }

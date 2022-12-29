@@ -1,6 +1,7 @@
 package com.cocosmaj.BellBooks.model.recipient;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -16,9 +17,9 @@ public class SpecialRequest {
 
     private String request;
 
-    private Date specialRequestDate;
+    private LocalDate specialRequestDate;
 
-    private Date letterMailedDate;
+    private LocalDate letterMailedDate;
 
     @Enumerated(value= EnumType.STRING)
     private SpecialRequestCategory category;
@@ -60,19 +61,19 @@ public class SpecialRequest {
         return request;
     }
 
-    public void setSpecialRequestDate(Date specialRequestDate){
+    public void setSpecialRequestDate(LocalDate specialRequestDate){
         this.specialRequestDate = specialRequestDate;
     }
 
-    public Date getSpecialRequestDate(){
+    public LocalDate getSpecialRequestDate(){
         return specialRequestDate;
     }
 
-    public void setLetterMailedDate(Date letterMailedDate){
+    public void setLetterMailedDate(LocalDate letterMailedDate){
         this.letterMailedDate = letterMailedDate;
     }
 
-    public Date getLetterMailedDate(){
+    public LocalDate getLetterMailedDate(){
         return letterMailedDate;
     }
 

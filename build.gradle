@@ -6,19 +6,31 @@ plugins {
 
 group = 'com.cocosmaj'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '18'
+sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
+
+}
+ext {
+	set('springCloudGcpVersion', "3.4.1")
+	set('springCloudVersion', "2021.0.5")
 }
 
 dependencies {
+	implementation 'com.google.cloud:spring-cloud-gcp-starter'
+	implementation 'com.google.cloud.sql:mysql-socket-factory-connector-j-8:1.2.2'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	runtimeOnly 'mysql:mysql-connector-java:8.0.25'
+	runtimeOnly 'mysql:mysql-connector-java:8.0.30'
 }
 
+dependencyManagement {
+	imports {
+		mavenBom "com.google.cloud:spring-cloud-gcp-dependencies:${springCloudGcpVersion}"
+	}
+}
 tasks.named('test') {
 	useJUnitPlatform()
 }

@@ -6,6 +6,7 @@ import com.cocosmaj.BellBooks.exception.RecipientNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,12 +23,8 @@ public class RecipientService {
     }
 
     public Recipient updateRecipient(Recipient recipient) throws RecipientNotFoundException {
-        try {
-            getRecipient(recipient.getId());
-            return recipientRepository.save(recipient);
-        } catch (RecipientNotFoundException exception){
-            throw exception;
-        }
+        getRecipient(recipient.getId());
+        return recipientRepository.save(recipient);
     }
 
     public Recipient getRecipient(Long recipientId) throws RecipientNotFoundException {
@@ -37,5 +34,23 @@ public class RecipientService {
         } else {
             return byId.get();
         }
+    }
+
+    public void deleteRecipient(Long id) throws RecipientNotFoundException{
+        getRecipient(id);
+        recipientRepository.deleteById(id);
+    }
+
+    public Recipient getRecipientByAssignedId(String assignedId) throws RecipientNotFoundException {
+        Optional<Recipient> byId = recipientRepository.findByAssignedId(assignedId);
+        if (byId.isEmpty()){
+            throw new RecipientNotFoundException();
+        } else {
+            return byId.get();
+        }
+    }
+
+    public List<Recipient> getAllRecipients() {
+        return (List) recipientRepository.findAll();
     }
 }

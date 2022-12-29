@@ -4,25 +4,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-@Entity
-public class Author {
+@Entity(name="author")
+public class Author extends Creator{
 
-    @Id
-    @GeneratedValue
-    private long id;
+    private String prefix;
 
     private String firstName;
 
     private String middleName;
+
     private String lastName;
 
-    public long getId() {
-        return id;
-    }
+    private String suffix;
 
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -46,5 +40,21 @@ public class Author {
 
     public void setMiddleName(String middle) {
         this.middleName = middle;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public String getSuffix() {
+        return suffix;
+    }
+
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
     }
 }

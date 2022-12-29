@@ -2,6 +2,7 @@ package com.cocosmaj.BellBooks.model.recipient;
 
 import com.cocosmaj.BellBooks.model.shipment.Shipment;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.List;
@@ -19,14 +20,17 @@ public class Recipient {
     @Column(nullable=false)
     private String lastName;
 
+    @Column(unique = true)
     private String assignedId;
 
     @ManyToOne
     private Facility facility;
 
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @OneToMany(mappedBy = "recipient")
     private List<Shipment> shipments;
 
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @OneToMany
     private List<SpecialRequest> specialRequests;
 

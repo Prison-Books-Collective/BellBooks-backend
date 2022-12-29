@@ -1,6 +1,7 @@
 package com.cocosmaj.BellBooks.model.shipment;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity(name="magazine")
@@ -10,7 +11,7 @@ public class Magazine extends PackageContent {
 
     private String issue;
 
-    private Date date;
+    private LocalDate date;
 
     @Enumerated(value= EnumType.STRING)
     private MagazineGenre genre;
@@ -31,11 +32,11 @@ public class Magazine extends PackageContent {
         this.issue = issue;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

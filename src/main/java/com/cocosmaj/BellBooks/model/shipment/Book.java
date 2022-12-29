@@ -1,20 +1,25 @@
 package com.cocosmaj.BellBooks.model.shipment;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity(name="book")
 public class Book extends PackageContent {
 
+    @Column(unique = true)
     private String ISBN10;
 
+    @Column(unique = true)
     private String ISBN13;
 
     @Enumerated(value= EnumType.STRING)
     private BookGenre genre;
 
     @ManyToMany
-    private List<Author> authors;
+    private Set<Creator> creators;
 
     public String getISBN10() {
         return ISBN10;
@@ -32,11 +37,11 @@ public class Book extends PackageContent {
         this.ISBN13 = ISBN13;
     }
 
-    public List<Author> getAuthors() {
-        return authors;
+    public Set<Creator> getCreators() {
+        return creators;
     }
 
-    public void setAuthors(List<Author> author) {
-        this.authors = author;
+    public void setCreators(Set<Creator> creators) {
+        this.creators = creators;
     }
 }

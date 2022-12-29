@@ -5,8 +5,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Shipment {
@@ -15,7 +17,7 @@ public class Shipment {
     @GeneratedValue
     private Long id;
 
-    private Date date;
+    private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name="recipient_id")
@@ -24,9 +26,8 @@ public class Shipment {
     @OneToMany
     private List<Note> notes;
 
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-    @OneToMany
-    private List<PackageContent> content;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<PackageContent> content;
 
     public Long getId() {
         return id;
@@ -36,11 +37,11 @@ public class Shipment {
         this.id = id;
     }
 
-    public Date getDate(){
+    public LocalDate getDate(){
         return date;
     }
 
-    public void setDate(Date date){
+    public void setDate(LocalDate date){
         this.date = date;
     }
 
@@ -61,11 +62,11 @@ public class Shipment {
         this.recipient = recipient;
     }
 
-    public List<PackageContent> getContent() {
+    public Set<PackageContent> getContent() {
         return content;
     }
 
-    public void setContent(List<PackageContent> content) {
+    public void setContent(Set<PackageContent> content) {
         this.content = content;
     }
 }

@@ -7,22 +7,16 @@ import javax.persistence.*;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
-  @JsonSubTypes.Type(value=ActivityBook.class, name = "activityBook"),
-  @JsonSubTypes.Type(value=Book.class, name = "book"),
-  @JsonSubTypes.Type(value=Comic.class, name = "comic"),
-  @JsonSubTypes.Type(value=Magazine.class, name = "magazine"),
-  @JsonSubTypes.Type(value=Zine.class, name = "zine")
-
+        @JsonSubTypes.Type(value=Author.class, name = "author"),
+        @JsonSubTypes.Type(value= Group.class, name = "group")
 })
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class PackageContent {
+public abstract class Creator {
 
     @Id
     @GeneratedValue
     private long id;
-
-    private String title;
 
     public long getId() {
         return id;
@@ -32,11 +26,5 @@ public abstract class PackageContent {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
-    }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
 }

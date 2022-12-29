@@ -1,6 +1,7 @@
 package com.cocosmaj.BellBooks.model.shipment;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -14,7 +15,7 @@ public class Note {
 
     private String content;
 
-    private Date date;
+    private LocalDate date;
 
     public void setId(Long newId){
         id = newId;
@@ -24,7 +25,7 @@ public class Note {
         content = noteContent;
     }
 
-    public void setDate(Date date){
+    public void setDate(LocalDate date){
         this.date = date;
     }
 
@@ -36,7 +37,7 @@ public class Note {
         return content;
     }
 
-    public Date getDate(){
+    public LocalDate getDate(){
         return date;
     }
 }

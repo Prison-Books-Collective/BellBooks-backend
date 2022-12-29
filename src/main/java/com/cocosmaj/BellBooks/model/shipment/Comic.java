@@ -1,6 +1,7 @@
 package com.cocosmaj.BellBooks.model.shipment;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity(name="comic")
@@ -8,7 +9,7 @@ public class Comic extends PackageContent {
 
     private String issueNumber;
 
-    private Date date;
+    private LocalDate date;
 
     public String getIssueNumber() {
         return issueNumber;
@@ -18,11 +19,11 @@ public class Comic extends PackageContent {
         this.issueNumber = issueNumber;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 }

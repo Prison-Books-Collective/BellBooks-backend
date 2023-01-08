@@ -12,10 +12,10 @@ import java.util.Optional;
 @Service
 public class ShipmentService {
 
-    @Autowired
+
     private ShipmentRepository shipmentRepository;
 
-    public ShipmentService(@Autowired ShipmentRepository shipmentRepository){
+    public ShipmentService( ShipmentRepository shipmentRepository){
         this.shipmentRepository = shipmentRepository;
     }
 
@@ -32,11 +32,16 @@ public class ShipmentService {
         }
     }
 
-    public List<Shipment> getAllShipmentsByRecipient(Long recipientId) {
-        return shipmentRepository.findAllByRecipientId(recipientId);
+    public List<Shipment> getAllShipmentsByRecipient(Long id) {
+        return shipmentRepository.findAllByRecipientId(id);
     }
 
     public void deleteShipment(Long id) {
         shipmentRepository.deleteById(id);
+    }
+
+    public void deleteShipmentsByRecipient(Long id) {
+        this.shipmentRepository.deleteByRecipientId(id);
+
     }
 }

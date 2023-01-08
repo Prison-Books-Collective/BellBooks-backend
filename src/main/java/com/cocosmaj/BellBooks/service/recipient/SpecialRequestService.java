@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class SpecialRequestService {
 
-    @Autowired
+
     private SpecialRequestRepository specialRequestRepository;
 
-    public SpecialRequestService(@Autowired SpecialRequestRepository specialRequestRepository){
+    public SpecialRequestService( SpecialRequestRepository specialRequestRepository){
         this.specialRequestRepository = specialRequestRepository;
     }
 }

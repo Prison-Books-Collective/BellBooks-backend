@@ -14,13 +14,16 @@ public class Facility {
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 100)
     private String name;
 
     private String additionalInfo;
 
     @Column(nullable = false, length = 100)
     private String street;
+
+    @Column(nullable = false, length = 100)
+    private String city;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -75,5 +78,13 @@ public class Facility {
 
     public void setZip(String zip) {
         this.zip = zip;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

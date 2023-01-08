@@ -11,10 +11,10 @@ import java.util.Optional;
 
 @Service
 public class RecipientService {
-    @Autowired
+
     private RecipientRepository recipientRepository;
 
-    public RecipientService(@Autowired RecipientRepository recipientRepository){
+    public RecipientService( RecipientRepository recipientRepository){
         this.recipientRepository = recipientRepository;
     }
 
@@ -52,5 +52,9 @@ public class RecipientService {
 
     public List<Recipient> getAllRecipients() {
         return (List) recipientRepository.findAll();
+    }
+
+    public List<Recipient> getRecipients(String firstName, String lastName) {
+        return recipientRepository.findAllByFirstNameContainingAndLastNameContaining(firstName, lastName);
     }
 }

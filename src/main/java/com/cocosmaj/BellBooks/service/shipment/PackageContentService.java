@@ -2,11 +2,23 @@ package com.cocosmaj.BellBooks.service.shipment;
 
 import com.cocosmaj.BellBooks.exception.PackageContentNotFoundException;
 import com.cocosmaj.BellBooks.model.shipment.*;
+import com.cocosmaj.BellBooks.repository.BookRepository;
 import com.cocosmaj.BellBooks.repository.CreatorRepository;
 import com.cocosmaj.BellBooks.repository.PackageContentRepository;
+import com.cocosmaj.BellBooks.repository.ZineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
+import java.net.http.HttpHeaders;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -14,15 +26,22 @@ import java.util.Set;
 @Service
 public class PackageContentService {
 
-    @Autowired
-    private PackageContentRepository packageContentRepository;
 
-    @Autowired
+    private PackageContentRepository<PackageContent> packageContentRepository;
+
+    private ZineRepository zineRepository;
+
+    private BookRepository bookRepository;
     private CreatorRepository creatorRepository;
 
-    public PackageContentService(@Autowired PackageContentRepository packageContentRepository, @Autowired CreatorRepository creatorRepository){
+    public WebClient webClient;
+
+    public PackageContentService( PackageContentRepository packageContentRepository,  CreatorRepository creatorRepository, ZineRepository zineRepository, BookRepository bookRepository, WebClient.Builder webClientBuilder){
         this.packageContentRepository = packageContentRepository;
         this.creatorRepository = creatorRepository;
+        this.zineRepository = zineRepository;
+        this.bookRepository = bookRepository;
+        this.webClient = webClientBuilder.baseUrl("https://www.googleapis.com").build();
     }
 
     public PackageContent addContent(PackageContent packageContent) {
@@ -84,27 +103,36 @@ public class PackageContentService {
         packageContentRepository.deleteById(id);
     }
 
+    public void queryGoogle(String isbn) {
+        Mono<String> response = this.webClient.get().uri("/books/v1/volumes?q=isbn:{isbn}", isbn).retrieve().bodyToMono(String.class);
+        response.subscribe(result -> System.out.println(result));
+    }
+
     public List<PackageContent> getAllContent() {
         return (List) packageContentRepository.findAll();
     }
 
     public Optional<Book> getBookByIsbn13(String isbn13) {
-        return packageContentRepository.findByISBN13(isbn13);
+        return bookRepository.findByISBN13(isbn13);
     }
 
     public Optional<Book> getBookByIsbn10(String isbn10) {
-        return packageContentRepository.findByISBN10(isbn10);
+        return bookRepository.findByISBN10(isbn10);
     }
 
     public List<PackageContent> getContentByTitle(String title) {
-        return packageContentRepository.findAllByTitleContaining(title);
+        return bookRepository.findAllByTitleContaining(title);
     }
 
     public List<Book> getBooksWithNoIsbn() {
-        return packageContentRepository.findByISBN10IsNullAndISBN13IsNull();
+        return bookRepository.findByISBN10IsNullAndISBN13IsNull();
     }
 
     public Optional<Zine> getZineByCode(String code) {
-        return packageContentRepository.findByCode(code);
+        return zineRepository.findByCode(code);
+    }
+
+    public List<Zine> getAllZines() {
+        return (List) zineRepository.findAll();
     }
 }

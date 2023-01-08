@@ -7,4 +7,7 @@ import java.util.List;
 
 public interface ShipmentRepository extends CrudRepository<Shipment, Long> {
     public List<Shipment> findAllByRecipientId(Long recipientId);
+
+    void deleteByRecipientId(Long id);
+
 }

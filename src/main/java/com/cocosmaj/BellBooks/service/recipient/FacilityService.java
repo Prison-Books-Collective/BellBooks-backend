@@ -12,10 +12,10 @@ import java.util.Optional;
 @Service
 public class FacilityService {
 
-    @Autowired
+
     private FacilityRepository facilityRepository;
 
-    public FacilityService(@Autowired FacilityRepository facilityRepository){
+    public FacilityService( FacilityRepository facilityRepository){
         this.facilityRepository = facilityRepository;
     }
     public Facility addFacility(Facility facility) {
@@ -24,7 +24,7 @@ public class FacilityService {
     }
 
     public List<Facility> getAllFacilities() {
-        return (List) facilityRepository.findAll();
+        return (List) facilityRepository.findAllByOrderByName();
     }
 
     public Facility getFacilityById(Long id) throws FacilityNotFoundException {

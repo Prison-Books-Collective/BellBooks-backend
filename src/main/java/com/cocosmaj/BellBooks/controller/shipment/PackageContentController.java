@@ -10,16 +10,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin
 @RestController
 public class PackageContentController {
 
-    @Autowired
+
     private PackageContentService packageContentService;
 
-    public PackageContentController(@Autowired PackageContentService packageContentService){
+    public PackageContentController( PackageContentService packageContentService){
         this.packageContentService = packageContentService;
     }
 
@@ -33,35 +34,50 @@ public class PackageContentController {
         }
     }
 
-    @GetMapping("/getBookByISBN10")
-    public ResponseEntity getBookByIsbn10(@RequestParam String isbn10){
-        Optional<Book> optional = packageContentService.getBookByIsbn10(isbn10);
-        if (optional.isPresent()){
 
-            return ResponseEntity.ok(optional.get());
+    @GetMapping("/getBookByISBN")
+    public ResponseEntity getBookByISBN(@RequestParam String isbn) {
+        if (isbn.length() == 10) {
+            return getBookByIsbn10(isbn);
+        } else if (isbn.length() == 13) {
+            return getBookByIsbn13(isbn);
         } else {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-
     }
 
-    @GetMapping("/getBookByISBN13")
-    public ResponseEntity getBookByIsbn13(@RequestParam String isbn13){
+    public void queryGoogle(String isbn) {
+        packageContentService.queryGoogle(isbn);
+    }
+
+    public ResponseEntity getBookByIsbn10(String isbn10){
+        Optional<Book> optional = packageContentService.getBookByIsbn10(isbn10);
+        if (optional.isPresent()){
+            return ResponseEntity.ok(optional.get());
+        } else {
+            queryGoogle(isbn10);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public ResponseEntity getBookByIsbn13(String isbn13){
         Optional<Book> optional = packageContentService.getBookByIsbn13(isbn13);
         if (optional.isPresent()){
 
             return ResponseEntity.ok(optional.get());
         } else {
+            queryGoogle(isbn13);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
+
         }
     }
 
-    @GetMapping("getContentByTitle")
+    @GetMapping("/getContentByTitle")
     public ResponseEntity getContentByTitle(@RequestParam String title){
         return ResponseEntity.ok(packageContentService.getContentByTitle(title));
     }
 
-    @GetMapping("getZineByCode")
+    @GetMapping("/getZineByCode")
     public ResponseEntity getZineByCode(@RequestParam String code){
         Optional<Zine> optional = packageContentService.getZineByCode(code);
         if (optional.isPresent()){
@@ -71,6 +87,10 @@ public class PackageContentController {
         }
     }
 
+    @GetMapping("/getAllZines")
+    public ResponseEntity getAllZines(){
+        return ResponseEntity.ok(packageContentService.getAllZines());
+    }
     @GetMapping("/getNoIsbnBooks")
     public ResponseEntity getBooksWithNoIsbn(){
         return ResponseEntity.ok(packageContentService.getBooksWithNoIsbn());

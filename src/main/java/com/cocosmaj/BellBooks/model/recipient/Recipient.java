@@ -17,6 +17,8 @@ public class Recipient {
     @Column(nullable=false)
     private String firstName;
 
+    private String middleName;
+
     @Column(nullable=false)
     private String lastName;
 
@@ -35,6 +37,14 @@ public class Recipient {
     private List<SpecialRequest> specialRequests;
 
     public Recipient() {
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
     }
 
     public Long getId() {

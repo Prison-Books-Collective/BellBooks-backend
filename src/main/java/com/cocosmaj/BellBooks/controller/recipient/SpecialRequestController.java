@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SpecialRequestController {
 
-    @Autowired
+
     private SpecialRequestService specialRequestService;
 
-    public SpecialRequestController(@Autowired SpecialRequestService specialRequestService){
+    public SpecialRequestController( SpecialRequestService specialRequestService){
         this.specialRequestService = specialRequestService;
     }
 

@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class RecipientController {
 
-    @Autowired
+
     private RecipientService recipientService;
 
-    public RecipientController(@Autowired RecipientService recipientService){
+    public RecipientController( RecipientService recipientService){
         this.recipientService = recipientService;
     }
 
@@ -33,6 +33,10 @@ public class RecipientController {
         }
     }
 
+    @GetMapping("getRecipients")
+    public ResponseEntity getRecipients(@RequestParam String firstName, @RequestParam String lastName){
+        return ResponseEntity.ok(this.recipientService.getRecipients(firstName, lastName));
+    }
     @GetMapping("/getRecipient")
     public ResponseEntity getRecipient(@RequestParam Long id) {
         try {
@@ -52,7 +56,7 @@ public class RecipientController {
         try {
             return ResponseEntity.ok(this.recipientService.getRecipientByAssignedId(assignedId));
         } catch (RecipientNotFoundException exception){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
     }
 

@@ -12,10 +12,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class FacilityController {
 
-    @Autowired
     private FacilityService facilityService;
 
-    public FacilityController(@Autowired FacilityService facilityService){
+    public FacilityController(FacilityService facilityService){
         this.facilityService = facilityService;
     }
 

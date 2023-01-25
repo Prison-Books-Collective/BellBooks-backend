@@ -17,12 +17,20 @@ public class Note {
 
     private LocalDate date;
 
+    public NoteType getNoteType() {
+        return noteType;
+    }
+
+    public void setNoteType(NoteType noteType) {
+        this.noteType = noteType;
+    }
+
     public void setId(Long newId){
         id = newId;
     }
 
-    public void setContent(String noteContent){
-        content = noteContent;
+    public void setContent(String content){
+        this.content = content;
     }
 
     public void setDate(LocalDate date){
@@ -34,7 +42,7 @@ public class Note {
     }
 
     public String getContent(){
-        return content;
+        return this.content;
     }
 
     public LocalDate getDate(){

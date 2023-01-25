@@ -20,11 +20,11 @@ public abstract class PackageContent {
 
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     private String title;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

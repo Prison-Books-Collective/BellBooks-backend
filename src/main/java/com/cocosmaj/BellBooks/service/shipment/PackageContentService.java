@@ -1,27 +1,23 @@
 package com.cocosmaj.BellBooks.service.shipment;
 
+import com.cocosmaj.BellBooks.exception.AuthorInterventionNeededException;
 import com.cocosmaj.BellBooks.exception.PackageContentNotFoundException;
 import com.cocosmaj.BellBooks.model.shipment.*;
 import com.cocosmaj.BellBooks.repository.BookRepository;
 import com.cocosmaj.BellBooks.repository.CreatorRepository;
 import com.cocosmaj.BellBooks.repository.PackageContentRepository;
 import com.cocosmaj.BellBooks.repository.ZineRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Operators;
 
-import java.net.http.HttpHeaders;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class PackageContentService {
@@ -103,9 +99,108 @@ public class PackageContentService {
         packageContentRepository.deleteById(id);
     }
 
-    public void queryGoogle(String isbn) {
+    public Optional<Book> queryGoogle(String isbn) throws InterruptedException {
         Mono<String> response = this.webClient.get().uri("/books/v1/volumes?q=isbn:{isbn}", isbn).retrieve().bodyToMono(String.class);
-        response.subscribe(result -> System.out.println(result));
+        ObjectMapper mapper = new ObjectMapper();
+        Book book = new Book();
+        Set<Creator> creators = new HashSet<>();
+        AtomicBoolean done = new AtomicBoolean(false);
+        AtomicBoolean needAuthorIntervention = new AtomicBoolean(false);
+        ArrayList<String> authorInterventions = new ArrayList<>();
+        response.subscribe(result -> {
+            try {
+                Map<String, String> map = mapper.readValue(result, HashMap.class);
+
+                for (Map.Entry entry : map.entrySet()) {
+                    if (entry.getKey().equals("items")) {
+                        ArrayList<HashMap<String, String>> itemsList = (ArrayList) entry.getValue();
+                        for (int i = 0; i < itemsList.size(); i++) {
+                            for (Map.Entry itemEntry : itemsList.get(i).entrySet()) {
+                                if (itemEntry.getKey().equals("volumeInfo")) {
+                                    HashMap<String, String> volumeInfo = (HashMap<String, String>) itemEntry.getValue();
+                                    System.out.println(volumeInfo);
+                                    for (Map.Entry volumeEntry : volumeInfo.entrySet()) {
+                                        if (volumeEntry.getKey().equals("title")) {
+                                            book.setTitle((String) volumeEntry.getValue());
+                                        } else if (volumeEntry.getKey().equals("authors")) {
+                                            ArrayList<String> authors = (ArrayList) volumeEntry.getValue();
+                                            for (String author : authors) {
+                                                String[] authorSplit = author.split(" ");
+                                                if (authorSplit.length == 2) {
+                                                    Author authorToAdd = new Author();
+                                                    authorToAdd.setFirstName(authorSplit[0]);
+                                                    authorToAdd.setLastName(authorSplit[1]);
+                                                    setAuthorId(authorToAdd);
+                                                    creators.add(authorToAdd);
+                                                } else {
+                                                    needAuthorIntervention.set(true);
+                                                    authorInterventions.add(author);
+                                                }
+                                            }
+                                            book.setCreators(creators);
+                                        } else if (volumeEntry.getKey().equals("industryIdentifiers")) {
+                                            ArrayList<HashMap<String, String>> identifiersList = (ArrayList) volumeEntry.getValue();
+                                            for (HashMap<String, String> identifierEntry : identifiersList) {
+                                                boolean isbn10 = false;
+                                                boolean isbn13 = false;
+                                                for (Map.Entry<String, String> isbnEntry : identifierEntry.entrySet()) {
+                                                    if (isbnEntry.getKey().equals("type")) {
+                                                        if (isbnEntry.getValue().equals("ISBN_10")) {
+                                                            isbn10 = true;
+                                                        } else if (isbnEntry.getValue().equals("ISBN_13")) {
+                                                            isbn13 = true;
+                                                        }
+                                                    }
+                                                    if (isbnEntry.getKey().equals("identifier")) {
+                                                        if (isbn10) {
+                                                            book.setISBN10(isbnEntry.getValue());
+                                                        } else if (isbn13) {
+                                                            book.setISBN13(isbnEntry.getValue());
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (book.getTitle() != null && !needAuthorIntervention.get()) {
+                    if (book.getISBN10() == null && book.getISBN13() == null) {
+                        if (isbn.length() == 10){
+                            book.setISBN10(isbn);
+                        } else if (isbn.length() == 13) {
+                            book.setISBN13(isbn);
+                        }
+                    }
+                    packageContentRepository.save(book);
+                }
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+            done.set(true);
+        });
+        while (!done.get()){
+
+        }
+        if (needAuthorIntervention.get()){
+            for (String author : authorInterventions){
+                Group group = new Group();
+                group.setName(author);
+                creators.add(group);
+            }
+            book.setCreators(creators);
+            return Optional.of(book);
+        }
+        if (isbn.length()==10) {
+            return bookRepository.findByISBN10(isbn);
+        } else {
+            return bookRepository.findByISBN13(isbn);
+        }
+
     }
 
     public List<PackageContent> getAllContent() {

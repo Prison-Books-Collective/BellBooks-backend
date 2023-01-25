@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.time.LocalDate;
+
 @CrossOrigin
 @RestController
 public class ShipmentController {
@@ -22,7 +25,15 @@ public class ShipmentController {
     @PostMapping("/addShipment")
     public ResponseEntity addShipment(@RequestBody Shipment shipment){
             return ResponseEntity.ok(shipmentService.addShipment(shipment));
+    }
 
+    @PutMapping("/updateShipment")
+    public ResponseEntity updateShipment(@RequestBody Shipment shipment){
+        try {
+            return ResponseEntity.ok(shipmentService.updateShipment(shipment));
+        } catch (ShipmentNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @GetMapping("/getShipment")
@@ -52,6 +63,11 @@ public class ShipmentController {
     public ResponseEntity deleteShipmentsByRecipient(@RequestParam Long id){
         this.shipmentService.deleteShipmentsByRecipient(id);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping("/getShipmentsByDate")
+    public ResponseEntity getShipmentsByDate(@RequestParam String date){
+        return ResponseEntity.ok(shipmentService.getShipmentsByDate(LocalDate.parse(date)));
     }
 
 

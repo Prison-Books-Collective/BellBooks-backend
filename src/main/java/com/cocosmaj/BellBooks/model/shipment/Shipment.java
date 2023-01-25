@@ -1,5 +1,6 @@
 package com.cocosmaj.BellBooks.model.shipment;
 
+import com.cocosmaj.BellBooks.model.recipient.Facility;
 import com.cocosmaj.BellBooks.model.recipient.Recipient;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.Cascade;
@@ -20,6 +21,10 @@ public class Shipment {
     private LocalDate date;
 
     @ManyToOne
+    @JoinColumn(name="facility_id")
+    private Facility facility;
+
+    @ManyToOne
     @JoinColumn(name="recipient_id")
     private Recipient recipient;
 
@@ -31,6 +36,14 @@ public class Shipment {
 
     public Long getId() {
         return id;
+    }
+
+    public Facility getFacility() {
+        return facility;
+    }
+
+    public void setFacility(Facility facility) {
+        this.facility = facility;
     }
 
     public void setId(Long id) {

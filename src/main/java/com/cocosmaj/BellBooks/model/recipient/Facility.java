@@ -1,6 +1,10 @@
 package com.cocosmaj.BellBooks.model.recipient;
 
+import com.cocosmaj.BellBooks.model.shipment.Shipment;
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="facility", uniqueConstraints = {

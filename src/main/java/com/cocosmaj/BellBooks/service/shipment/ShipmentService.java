@@ -6,6 +6,8 @@ import com.cocosmaj.BellBooks.repository.ShipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,5 +45,14 @@ public class ShipmentService {
     public void deleteShipmentsByRecipient(Long id) {
         this.shipmentRepository.deleteByRecipientId(id);
 
+    }
+
+    public List<Shipment> getShipmentsByDate(LocalDate date) {
+        return this.shipmentRepository.findAllByDate(date);
+    }
+
+    public Shipment updateShipment(Shipment shipment) throws ShipmentNotFoundException {
+        getShipment(shipment.getId());
+        return this.shipmentRepository.save(shipment);
     }
 }

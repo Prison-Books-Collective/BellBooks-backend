@@ -1,10 +1,12 @@
 package com.cocosmaj.BellBooks.controller.shipment;
 
+import com.cocosmaj.BellBooks.exception.AuthorInterventionNeededException;
 import com.cocosmaj.BellBooks.exception.PackageContentNotFoundException;
 import com.cocosmaj.BellBooks.model.shipment.Book;
 import com.cocosmaj.BellBooks.model.shipment.PackageContent;
 import com.cocosmaj.BellBooks.model.shipment.Zine;
 import com.cocosmaj.BellBooks.service.shipment.PackageContentService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,39 +38,49 @@ public class PackageContentController {
 
 
     @GetMapping("/getBookByISBN")
-    public ResponseEntity getBookByISBN(@RequestParam String isbn) {
+    public ResponseEntity getBookByISBN(@RequestParam String isbn) throws InterruptedException {
         if (isbn.length() == 10) {
-            return getBookByIsbn10(isbn);
+            Optional<Book> bookByIsbn10 = getBookByIsbn10(isbn);
+            if (bookByIsbn10.isPresent()){
+                if (bookByIsbn10.get().getId() == null){
+                    return new ResponseEntity(bookByIsbn10.get(), HttpStatus.EXPECTATION_FAILED);
+                }
+                    return ResponseEntity.ok(bookByIsbn10.get());
+            }
         } else if (isbn.length() == 13) {
-            return getBookByIsbn13(isbn);
+                Optional<Book> bookByIsbn13 = getBookByIsbn13(isbn);
+                if (bookByIsbn13.isPresent()) {
+                    if (bookByIsbn13.get().getId() == null){
+                        return new ResponseEntity(bookByIsbn13.get(), HttpStatus.EXPECTATION_FAILED);
+                    }
+                    return ResponseEntity.ok(bookByIsbn13);
+                }
         } else {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity(HttpStatus.EXPECTATION_FAILED);
     }
 
-    public void queryGoogle(String isbn) {
-        packageContentService.queryGoogle(isbn);
+    public Optional<Book> queryGoogle(String isbn) throws InterruptedException {
+           return packageContentService.queryGoogle(isbn);
+
     }
 
-    public ResponseEntity getBookByIsbn10(String isbn10){
+    public Optional<Book> getBookByIsbn10(String isbn10) throws  InterruptedException {
         Optional<Book> optional = packageContentService.getBookByIsbn10(isbn10);
         if (optional.isPresent()){
-            return ResponseEntity.ok(optional.get());
+            return optional;
         } else {
-            queryGoogle(isbn10);
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return queryGoogle(isbn10);
         }
     }
 
-    public ResponseEntity getBookByIsbn13(String isbn13){
+    public Optional<Book> getBookByIsbn13(String isbn13) throws InterruptedException {
         Optional<Book> optional = packageContentService.getBookByIsbn13(isbn13);
         if (optional.isPresent()){
-
-            return ResponseEntity.ok(optional.get());
+            return optional;
         } else {
-            queryGoogle(isbn13);
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-
+            return queryGoogle(isbn13);
         }
     }
 

@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @CrossOrigin
 @RestController
 public class RecipientController {
@@ -58,6 +60,11 @@ public class RecipientController {
         } catch (RecipientNotFoundException exception){
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/getRecipientLocation")
+    public ResponseEntity getRecipientLocation(@RequestParam String id) throws IOException, InterruptedException {
+        return ResponseEntity.ok(this.recipientService.getRecipientLocation(id));
     }
 
     @DeleteMapping("/deleteRecipient")

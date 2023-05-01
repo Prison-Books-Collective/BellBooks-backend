@@ -5,7 +5,14 @@ import com.cocosmaj.BellBooks.repository.RecipientRepository;
 import com.cocosmaj.BellBooks.exception.RecipientNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.Page;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.*;
+import org.w3c.dom.html.HTMLButtonElement;
+import org.w3c.dom.html.HTMLElement;
+import org.w3c.dom.html.HTMLLinkElement;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,6 +64,33 @@ public class RecipientService {
         } else {
             return byId.get();
         }
+    }
+
+    public String getRecipientLocation(String id) throws IOException, IndexOutOfBoundsException {
+        WebClient webClient = new WebClient(BrowserVersion.FIREFOX);
+        HtmlPage page = webClient.getPage("https://webapps.doc.state.nc.us/opi/offendersearch.do?method=view");
+
+        HtmlTable table = (HtmlTable) page.getByXPath("//table[contains(@class,'displaytable')]").get(0);
+
+        HtmlTextInput recipientIdField = (HtmlTextInput) table.getByXPath("//input[contains(@name,'searchOffenderId')]").get(0);
+        recipientIdField.type(id);
+        HtmlPage recipientList = (HtmlPage) recipientIdField.type('\n');
+        webClient.waitForBackgroundJavaScript(5000);
+
+        table = (HtmlTable) recipientList.getByXPath("//table[contains(@class,'displaytable')]").get(0);
+
+        List<HtmlAnchor> listOfRecipientIds = table.getByXPath("//a[contains(@class,'tablelink')]");
+        for (HtmlAnchor recipientLink : listOfRecipientIds){
+            if (recipientLink.getTextContent().equals(id)){
+                HtmlPage recipientProfile = recipientLink.click();
+                webClient.waitForBackgroundJavaScript(5000);
+
+                HtmlBold locationLabel = (HtmlBold) recipientProfile.getByXPath("//b[contains(text(), 'Current Location:')]").get(0);
+                return locationLabel.getParentNode().getNextSibling().getTextContent();
+            }
+        }
+        return "";
+
     }
 
     public List<Recipient> getAllRecipients() {

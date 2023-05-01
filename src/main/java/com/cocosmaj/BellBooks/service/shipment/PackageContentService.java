@@ -1,6 +1,5 @@
 package com.cocosmaj.BellBooks.service.shipment;
 
-import com.cocosmaj.BellBooks.exception.AuthorInterventionNeededException;
 import com.cocosmaj.BellBooks.exception.PackageContentNotFoundException;
 import com.cocosmaj.BellBooks.model.shipment.*;
 import com.cocosmaj.BellBooks.repository.BookRepository;
@@ -9,15 +8,12 @@ import com.cocosmaj.BellBooks.repository.PackageContentRepository;
 import com.cocosmaj.BellBooks.repository.ZineRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Operators;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class PackageContentService {
@@ -49,7 +45,7 @@ public class PackageContentService {
                     if (creator.getClass() == Author.class){
                         setAuthorId((Author) creator);
                     } else {
-                        setGroupId((Group) creator);
+                        setGroupId((AuthorGroup) creator);
                     }
                 }
             }
@@ -57,14 +53,14 @@ public class PackageContentService {
         return this.packageContentRepository.save(packageContent);
     }
 
-    private void setGroupId(Group creator) {
-        Group group = creator;
-        Optional<Group> optionalGroup = creatorRepository.findByName(group.getName());
+    private void setGroupId(AuthorGroup creator) {
+        AuthorGroup authorGroup = creator;
+        Optional<AuthorGroup> optionalGroup = creatorRepository.findByName(authorGroup.getName());
         if (!optionalGroup.isPresent()){
-            Group savedGroup = creatorRepository.save(group);
-            group.setId(savedGroup.getId());
+            AuthorGroup savedAuthorGroup = creatorRepository.save(authorGroup);
+            authorGroup.setId(savedAuthorGroup.getId());
         } else {
-            group.setId(optionalGroup.get().getId());
+            authorGroup.setId(optionalGroup.get().getId());
         }
     }
 
@@ -188,9 +184,9 @@ public class PackageContentService {
         }
         if (needAuthorIntervention.get()){
             for (String author : authorInterventions){
-                Group group = new Group();
-                group.setName(author);
-                creators.add(group);
+                AuthorGroup authorGroup = new AuthorGroup();
+                authorGroup.setName(author);
+                creators.add(authorGroup);
             }
             book.setCreators(creators);
             return Optional.of(book);

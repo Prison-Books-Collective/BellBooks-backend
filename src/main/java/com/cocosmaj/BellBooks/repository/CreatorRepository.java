@@ -2,7 +2,7 @@ package com.cocosmaj.BellBooks.repository;
 
 import com.cocosmaj.BellBooks.model.shipment.Author;
 import com.cocosmaj.BellBooks.model.shipment.Creator;
-import com.cocosmaj.BellBooks.model.shipment.Group;
+import com.cocosmaj.BellBooks.model.shipment.AuthorGroup;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,5 +13,5 @@ public interface CreatorRepository extends CrudRepository<Creator, Long> {
 
     Optional<Author> findByFirstNameAndLastName(String first, String last);
 
-    Optional<Group> findByName(String name);
+    Optional<AuthorGroup> findByName(String name);
 }

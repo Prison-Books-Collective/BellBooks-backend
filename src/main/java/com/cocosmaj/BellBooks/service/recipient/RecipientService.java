@@ -22,9 +22,18 @@ public class RecipientService {
         return this.recipientRepository.save(recipient);
     }
 
-    public Recipient updateRecipient(Recipient recipient) throws RecipientNotFoundException {
-        getRecipient(recipient.getId());
-        return recipientRepository.save(recipient);
+    public Recipient updateRecipient(Recipient newRecipientInfo) throws RecipientNotFoundException {
+        Recipient databaseRecipient = getRecipient(newRecipientInfo.getId());
+        if (!databaseRecipient.getAssignedId().equals(newRecipientInfo.getAssignedId())) {
+            databaseRecipient.setAssignedId(newRecipientInfo.getAssignedId());
+        }
+        if (!databaseRecipient.getFirstName().equals(newRecipientInfo.getFirstName())) {
+            databaseRecipient.setFirstName(newRecipientInfo.getFirstName());
+        }
+        if (!databaseRecipient.getLastName().equals(newRecipientInfo.getLastName())) {
+            databaseRecipient.setLastName(newRecipientInfo.getLastName());
+        }
+        return recipientRepository.save(databaseRecipient);
     }
 
     public Recipient getRecipient(Long recipientId) throws RecipientNotFoundException {

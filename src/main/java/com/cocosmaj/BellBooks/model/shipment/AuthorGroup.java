@@ -2,8 +2,8 @@ package com.cocosmaj.BellBooks.model.shipment;
 
 import javax.persistence.Entity;
 
-@Entity(name="group")
-public class Group extends Creator{
+@Entity(name="authorGroup")
+public class AuthorGroup extends Creator{
 
     private String name;
 

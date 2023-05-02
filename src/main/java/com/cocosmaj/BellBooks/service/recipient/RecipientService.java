@@ -3,6 +3,7 @@ package com.cocosmaj.BellBooks.service.recipient;
 import com.cocosmaj.BellBooks.model.recipient.Recipient;
 import com.cocosmaj.BellBooks.repository.RecipientRepository;
 import com.cocosmaj.BellBooks.exception.RecipientNotFoundException;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
@@ -12,6 +13,8 @@ import com.gargoylesoftware.htmlunit.html.*;
 import org.w3c.dom.html.HTMLButtonElement;
 import org.w3c.dom.html.HTMLElement;
 import org.w3c.dom.html.HTMLLinkElement;
+
+import javax.swing.text.TableView;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -67,30 +70,26 @@ public class RecipientService {
     }
 
     public String getRecipientLocation(String id) throws IOException, IndexOutOfBoundsException {
-        WebClient webClient = new WebClient(BrowserVersion.FIREFOX);
-        HtmlPage page = webClient.getPage("https://webapps.doc.state.nc.us/opi/offendersearch.do?method=view");
+        try {
+            WebClient webClient = new WebClient(BrowserVersion.FIREFOX);
+            HtmlPage page = webClient.getPage("https://webapps.doc.state.nc.us/opi/viewoffender.do?method=view&offenderID="+id);
+            HtmlTable recipientInfoTable = (HtmlTable) page.getByXPath("//table[contains(@class, 'displaydatatable')]").get(0);
 
-        HtmlTable table = (HtmlTable) page.getByXPath("//table[contains(@class,'displaytable')]").get(0);
+            List<HtmlTableRow> tableRows = recipientInfoTable.getByXPath("//tr");
+            for (HtmlTableRow row : tableRows) {
+                if (row.getChildElementCount()!=2) continue;
+                if (row.getFirstElementChild().getChildElementCount()!=1) continue;
+                if (row.getFirstElementChild().getFirstElementChild().getTextContent().contains("Current Location")){
+                    return row.getLastChild().getTextContent();
+                }
 
-        HtmlTextInput recipientIdField = (HtmlTextInput) table.getByXPath("//input[contains(@name,'searchOffenderId')]").get(0);
-        recipientIdField.type(id);
-        HtmlPage recipientList = (HtmlPage) recipientIdField.type('\n');
-        webClient.waitForBackgroundJavaScript(5000);
-
-        table = (HtmlTable) recipientList.getByXPath("//table[contains(@class,'displaytable')]").get(0);
-
-        List<HtmlAnchor> listOfRecipientIds = table.getByXPath("//a[contains(@class,'tablelink')]");
-        for (HtmlAnchor recipientLink : listOfRecipientIds){
-            if (recipientLink.getTextContent().equals(id)){
-                HtmlPage recipientProfile = recipientLink.click();
-                webClient.waitForBackgroundJavaScript(5000);
-
-                HtmlBold locationLabel = (HtmlBold) recipientProfile.getByXPath("//b[contains(text(), 'Current Location:')]").get(0);
-                return locationLabel.getParentNode().getNextSibling().getTextContent();
             }
+        } catch(RuntimeException e) {
+            System.err.println("Encountered error while attempting to parse NC State website: " + e.getMessage());
+            return "ERROR";
         }
-        return "";
 
+        return "";
     }
 
     public List<Recipient> getAllRecipients() {

@@ -2,11 +2,9 @@ package com.cocosmaj.BellBooks.service.shipment;
 
 import com.cocosmaj.BellBooks.exception.ShipmentNotFoundException;
 import com.cocosmaj.BellBooks.model.shipment.Shipment;
-import com.cocosmaj.BellBooks.repository.ShipmentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.cocosmaj.BellBooks.controller.repository.ShipmentRepository;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;

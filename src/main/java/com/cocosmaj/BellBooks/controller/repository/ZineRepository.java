@@ -1,6 +1,5 @@
-package com.cocosmaj.BellBooks.repository;
+package com.cocosmaj.BellBooks.controller.repository;
 
-import com.cocosmaj.BellBooks.model.shipment.PackageContent;
 import com.cocosmaj.BellBooks.model.shipment.Zine;
 import org.springframework.stereotype.Repository;
 

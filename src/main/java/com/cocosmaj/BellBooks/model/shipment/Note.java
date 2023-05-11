@@ -1,9 +1,14 @@
 package com.cocosmaj.BellBooks.model.shipment;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
+@Getter
+@Setter
 @Entity
 public class Note {
     @Id
@@ -16,36 +21,4 @@ public class Note {
     private String content;
 
     private LocalDate date;
-
-    public NoteType getNoteType() {
-        return noteType;
-    }
-
-    public void setNoteType(NoteType noteType) {
-        this.noteType = noteType;
-    }
-
-    public void setId(Long newId){
-        id = newId;
-    }
-
-    public void setContent(String content){
-        this.content = content;
-    }
-
-    public void setDate(LocalDate date){
-        this.date = date;
-    }
-
-    public Long getId(){
-        return id;
-    }
-
-    public String getContent(){
-        return this.content;
-    }
-
-    public LocalDate getDate(){
-        return date;
-    }
 }

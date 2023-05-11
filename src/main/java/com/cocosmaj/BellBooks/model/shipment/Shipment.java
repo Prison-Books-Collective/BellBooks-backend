@@ -3,6 +3,8 @@ package com.cocosmaj.BellBooks.model.shipment;
 import com.cocosmaj.BellBooks.model.recipient.Facility;
 import com.cocosmaj.BellBooks.model.recipient.Recipient;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -11,6 +13,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+@Getter
+@Setter
 @Entity
 public class Shipment {
 
@@ -34,52 +38,8 @@ public class Shipment {
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<PackageContent> content;
 
-    public Long getId() {
-        return id;
-    }
-
-    public Facility getFacility() {
-        return facility;
-    }
-
-    public void setFacility(Facility facility) {
-        this.facility = facility;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDate getDate(){
-        return date;
-    }
-
-    public void setDate(LocalDate date){
-        this.date = date;
-    }
-
-    public List<Note> getNotes(){
-        return notes;
-    }
-
-    public void setNotes(List<Note> notes){
-        this.notes = notes;
-    }
-
     @JsonBackReference
     public Recipient getRecipient() {
         return recipient;
-    }
-
-    public void setRecipient(Recipient recipient) {
-        this.recipient = recipient;
-    }
-
-    public Set<PackageContent> getContent() {
-        return content;
-    }
-
-    public void setContent(Set<PackageContent> content) {
-        this.content = content;
     }
 }

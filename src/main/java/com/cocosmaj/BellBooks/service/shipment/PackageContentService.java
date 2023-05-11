@@ -2,10 +2,10 @@ package com.cocosmaj.BellBooks.service.shipment;
 
 import com.cocosmaj.BellBooks.exception.PackageContentNotFoundException;
 import com.cocosmaj.BellBooks.model.shipment.*;
-import com.cocosmaj.BellBooks.repository.BookRepository;
-import com.cocosmaj.BellBooks.repository.CreatorRepository;
-import com.cocosmaj.BellBooks.repository.PackageContentRepository;
-import com.cocosmaj.BellBooks.repository.ZineRepository;
+import com.cocosmaj.BellBooks.controller.repository.BookRepository;
+import com.cocosmaj.BellBooks.controller.repository.CreatorRepository;
+import com.cocosmaj.BellBooks.controller.repository.PackageContentRepository;
+import com.cocosmaj.BellBooks.controller.repository.ZineRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;

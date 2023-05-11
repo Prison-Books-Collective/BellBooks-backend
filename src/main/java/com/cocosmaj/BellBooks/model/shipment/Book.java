@@ -1,11 +1,16 @@
 package com.cocosmaj.BellBooks.model.shipment;
 
+
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
 
+@Getter
+@Setter
 @Entity(name="book")
 public class Book extends PackageContent {
 
@@ -20,28 +25,4 @@ public class Book extends PackageContent {
 
     @ManyToMany
     private Set<Creator> creators;
-
-    public String getISBN10() {
-        return ISBN10;
-    }
-
-    public void setISBN10(String ISBN10) {
-        this.ISBN10 = ISBN10;
-    }
-
-    public String getISBN13() {
-        return ISBN13;
-    }
-
-    public void setISBN13(String ISBN13) {
-        this.ISBN13 = ISBN13;
-    }
-
-    public Set<Creator> getCreators() {
-        return creators;
-    }
-
-    public void setCreators(Set<Creator> creators) {
-        this.creators = creators;
-    }
 }

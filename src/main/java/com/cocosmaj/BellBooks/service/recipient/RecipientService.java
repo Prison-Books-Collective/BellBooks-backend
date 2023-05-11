@@ -1,9 +1,9 @@
 package com.cocosmaj.BellBooks.service.recipient;
 
 import com.cocosmaj.BellBooks.model.recipient.Recipient;
-import com.cocosmaj.BellBooks.repository.RecipientRepository;
+import com.cocosmaj.BellBooks.controller.repository.RecipientRepository;
 import com.cocosmaj.BellBooks.exception.RecipientNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.cocosmaj.BellBooks.util.RecipientHelper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class RecipientService {
     }
 
     public Recipient updateRecipient(Recipient newRecipientInfo) throws RecipientNotFoundException {
-        Recipient databaseRecipient = getRecipient(newRecipientInfo.getId());
+        Recipient databaseRecipient = RecipientHelper.extractRecipient(recipientRepository.findById(newRecipientInfo.getId()));
         if (!databaseRecipient.getAssignedId().equals(newRecipientInfo.getAssignedId())) {
             databaseRecipient.setAssignedId(newRecipientInfo.getAssignedId());
         }
@@ -36,18 +36,13 @@ public class RecipientService {
         return recipientRepository.save(databaseRecipient);
     }
 
-    public Recipient getRecipient(Long recipientId) throws RecipientNotFoundException {
-        Optional<Recipient> byId = recipientRepository.findById(recipientId);
-        if (byId.isEmpty()){
-            throw new RecipientNotFoundException();
-        } else {
-            return byId.get();
-        }
+    public void deleteRecipient(Long id) throws RecipientNotFoundException{
+        getRecipientById(id);
+        recipientRepository.deleteById(id);
     }
 
-    public void deleteRecipient(Long id) throws RecipientNotFoundException{
-        getRecipient(id);
-        recipientRepository.deleteById(id);
+    public Recipient getRecipientById(Long id) throws RecipientNotFoundException {
+        return RecipientHelper.extractRecipient(recipientRepository.findById(id));
     }
 
     public Recipient getRecipientByAssignedId(String assignedId) throws RecipientNotFoundException {

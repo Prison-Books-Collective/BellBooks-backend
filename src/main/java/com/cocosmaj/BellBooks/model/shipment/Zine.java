@@ -1,17 +1,14 @@
 package com.cocosmaj.BellBooks.model.shipment;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity(name="zine")
 public class Zine extends PackageContent {
 
     private String code;
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
 }

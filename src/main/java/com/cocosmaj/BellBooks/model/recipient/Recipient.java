@@ -2,11 +2,15 @@ package com.cocosmaj.BellBooks.model.recipient;
 
 import com.cocosmaj.BellBooks.model.shipment.Shipment;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 public class Recipient {
 
@@ -39,68 +43,8 @@ public class Recipient {
     public Recipient() {
     }
 
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getAssignedId() {
-        return assignedId;
-    }
-
-    public void setAssignedId(String assignedId) {
-        this.assignedId = assignedId;
-    }
-
-    public Facility getFacility() {
-        return facility;
-    }
-
-    public void setFacility(Facility facility) {
-        this.facility = facility;
-    }
-
     @JsonManagedReference
     public List<Shipment> getShipments() {
         return shipments;
-    }
-
-    public void setShipments(List<Shipment> shipments) {
-        this.shipments = shipments;
-    }
-
-    public List<SpecialRequest> getSpecialRequests() {
-        return specialRequests;
-    }
-
-    public void setSpecialRequests(List<SpecialRequest> specialRequests) {
-        this.specialRequests = specialRequests;
     }
 }

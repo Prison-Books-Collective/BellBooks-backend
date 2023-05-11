@@ -1,4 +1,4 @@
-package com.cocosmaj.BellBooks.repository.shipment;
+package com.cocosmaj.BellBooks.controller.repository.shipment;
 
 import com.cocosmaj.BellBooks.model.shipment.Note;
 import org.springframework.data.repository.CrudRepository;

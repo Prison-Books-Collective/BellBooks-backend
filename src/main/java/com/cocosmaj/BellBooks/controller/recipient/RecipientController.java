@@ -40,7 +40,7 @@ public class RecipientController {
     @GetMapping("/getRecipient")
     public ResponseEntity getRecipient(@RequestParam Long id) {
         try {
-            return ResponseEntity.ok(this.recipientService.getRecipient(id));
+            return ResponseEntity.ok(this.recipientService.getRecipientById(id));
         } catch (RecipientNotFoundException exception){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }

@@ -1,4 +1,4 @@
-package com.cocosmaj.BellBooks.repository;
+package com.cocosmaj.BellBooks.controller.repository;
 
 import com.cocosmaj.BellBooks.model.shipment.Book;
 import com.cocosmaj.BellBooks.model.shipment.PackageContent;

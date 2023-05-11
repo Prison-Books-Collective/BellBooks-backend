@@ -1,7 +1,6 @@
 package com.cocosmaj.BellBooks.service.shipment;
 
-import com.cocosmaj.BellBooks.controller.shipment.CreatorController;
-import com.cocosmaj.BellBooks.repository.CreatorRepository;
+import com.cocosmaj.BellBooks.controller.repository.CreatorRepository;
 import org.springframework.stereotype.Service;
 
 @Service

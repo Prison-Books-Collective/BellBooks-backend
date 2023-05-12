@@ -4,8 +4,14 @@ import com.cocosmaj.BellBooks.model.recipient.Recipient;
 import com.cocosmaj.BellBooks.controller.repository.RecipientRepository;
 import com.cocosmaj.BellBooks.exception.RecipientNotFoundException;
 import com.cocosmaj.BellBooks.util.RecipientHelper;
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.html.HtmlTable;
+import com.gargoylesoftware.htmlunit.html.HtmlTableRow;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,6 +58,30 @@ public class RecipientService {
         } else {
             return byId.get();
         }
+    }
+
+    public String getRecipientLocation(String id) throws IOException, IndexOutOfBoundsException {
+        if (id.length()==7) {
+            try {
+                WebClient webClient = new WebClient(BrowserVersion.FIREFOX);
+                HtmlPage page = webClient.getPage("https://webapps.doc.state.nc.us/opi/viewoffender.do?method=view&offenderID=" + id);
+                HtmlTable recipientInfoTable = (HtmlTable) page.getByXPath("//table[contains(@class, 'displaydatatable')]").get(0);
+
+                List<HtmlTableRow> tableRows = recipientInfoTable.getByXPath("//tr");
+                for (HtmlTableRow row : tableRows) {
+                    if (row.getChildElementCount() != 2) continue;
+                    if (row.getFirstElementChild().getChildElementCount() != 1) continue;
+                    if (row.getFirstElementChild().getFirstElementChild().getTextContent().contains("Current Location")) {
+                        return row.getLastChild().getTextContent();
+                    }
+
+                }
+            } catch (RuntimeException e) {
+                System.err.println("Encountered error while attempting to parse NC State website: " + e.getMessage());
+                return "ERROR";
+            }
+        }
+        return "";
     }
 
     public List<Recipient> getAllRecipients() {

@@ -6,6 +6,7 @@ import com.cocosmaj.BellBooks.model.shipment.Book;
 import com.cocosmaj.BellBooks.model.shipment.PackageContent;
 import com.cocosmaj.BellBooks.model.shipment.Zine;
 import com.cocosmaj.BellBooks.service.shipment.PackageContentService;
+import com.cocosmaj.BellBooks.util.GoogleBookAPIService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,9 +22,11 @@ public class PackageContentController {
 
 
     private PackageContentService packageContentService;
+    private GoogleBookAPIService googleBookAPIService;
 
-    public PackageContentController( PackageContentService packageContentService){
+    public PackageContentController(PackageContentService packageContentService, GoogleBookAPIService googleBookAPIService){
         this.packageContentService = packageContentService;
+        this.googleBookAPIService = googleBookAPIService;
     }
 
     //get content by ID
@@ -61,9 +64,8 @@ public class PackageContentController {
         return new ResponseEntity(HttpStatus.EXPECTATION_FAILED);
     }
 
-    public Optional<Book> queryGoogle(String isbn) throws InterruptedException {
-           return packageContentService.queryGoogle(isbn);
-
+    public Book queryGoogle(String isbn) throws InterruptedException {
+           return googleBookAPIService.queryGoogle(isbn);
     }
 
     public Optional<Book> getBookByIsbn10(String isbn10) throws  InterruptedException {
@@ -71,7 +73,7 @@ public class PackageContentController {
         if (optional.isPresent()){
             return optional;
         } else {
-            return queryGoogle(isbn10);
+            return Optional.of(queryGoogle(isbn10));
         }
     }
 
@@ -80,7 +82,7 @@ public class PackageContentController {
         if (optional.isPresent()){
             return optional;
         } else {
-            return queryGoogle(isbn13);
+            return Optional.of(queryGoogle(isbn13));
         }
     }
 
@@ -135,7 +137,6 @@ public class PackageContentController {
 
     @PostMapping("/addContent")
     public ResponseEntity addContent(@RequestBody PackageContent packageContent){
-
         return ResponseEntity.ok(this.packageContentService.addContent(packageContent));
     }
 

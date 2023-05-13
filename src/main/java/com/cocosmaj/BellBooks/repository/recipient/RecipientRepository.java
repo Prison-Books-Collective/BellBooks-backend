@@ -1,4 +1,4 @@
-package com.cocosmaj.BellBooks.controller.repository;
+package com.cocosmaj.BellBooks.repository.recipient;
 
 import com.cocosmaj.BellBooks.model.recipient.Recipient;
 import org.springframework.data.repository.CrudRepository;

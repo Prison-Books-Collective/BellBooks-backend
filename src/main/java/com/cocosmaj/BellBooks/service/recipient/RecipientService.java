@@ -1,7 +1,7 @@
 package com.cocosmaj.BellBooks.service.recipient;
 
 import com.cocosmaj.BellBooks.model.recipient.Recipient;
-import com.cocosmaj.BellBooks.controller.repository.RecipientRepository;
+import com.cocosmaj.BellBooks.repository.recipient.RecipientRepository;
 import com.cocosmaj.BellBooks.exception.RecipientNotFoundException;
 import com.cocosmaj.BellBooks.util.RecipientHelper;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
@@ -80,6 +80,8 @@ public class RecipientService {
                 System.err.println("Encountered error while attempting to parse NC State website: " + e.getMessage());
                 return "ERROR";
             }
+        } else {
+            return "Id.length != 7";
         }
         return "";
     }

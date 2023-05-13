@@ -2,7 +2,7 @@ package com.cocosmaj.BellBooks.service.recipient;
 
 import com.cocosmaj.BellBooks.exception.FacilityNotFoundException;
 import com.cocosmaj.BellBooks.model.recipient.Facility;
-import com.cocosmaj.BellBooks.controller.repository.FacilityRepository;
+import com.cocosmaj.BellBooks.repository.recipient.FacilityRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -3,12 +3,10 @@ package com.cocosmaj.BellBooks.service.recipient;
 import com.cocosmaj.BellBooks.exception.RecipientNotFoundException;
 import com.cocosmaj.BellBooks.model.recipient.Recipient;
 import com.cocosmaj.BellBooks.model.recipient.SpecialRequest;
-import com.cocosmaj.BellBooks.controller.repository.RecipientRepository;
-import com.cocosmaj.BellBooks.controller.repository.SpecialRequestRepository;
+import com.cocosmaj.BellBooks.repository.recipient.RecipientRepository;
+import com.cocosmaj.BellBooks.repository.recipient.SpecialRequestRepository;
 import com.cocosmaj.BellBooks.util.RecipientHelper;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class SpecialRequestService {

@@ -1,4 +1,4 @@
-package com.cocosmaj.BellBooks.model.recipient;
+package com.cocosmaj.BellBooks.model.enums;
 
 public enum SpecialRequestStatus {
     OPEN,

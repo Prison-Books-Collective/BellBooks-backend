@@ -18,5 +18,4 @@ public class Book extends PackageContent {
     private String ISBN13;
 
     private String authors;
-
 }

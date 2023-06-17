@@ -1,19 +1,15 @@
 package com.cocosmaj.BellBooks.controller.shipment;
 
-import com.cocosmaj.BellBooks.exception.AuthorInterventionNeededException;
 import com.cocosmaj.BellBooks.exception.PackageContentNotFoundException;
 import com.cocosmaj.BellBooks.model.shipment.Book;
 import com.cocosmaj.BellBooks.model.shipment.PackageContent;
 import com.cocosmaj.BellBooks.model.shipment.Zine;
 import com.cocosmaj.BellBooks.service.shipment.PackageContentService;
 import com.cocosmaj.BellBooks.util.GoogleBookAPIService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin
@@ -89,6 +85,16 @@ public class PackageContentController {
     @GetMapping("/getContentByTitle")
     public ResponseEntity getContentByTitle(@RequestParam String title){
         return ResponseEntity.ok(packageContentService.getContentByTitle(title));
+    }
+
+    @GetMapping("/content")
+    public ResponseEntity getContentByTitleAndAuthor(@RequestParam String title, @RequestParam String author){
+        return ResponseEntity.ok(packageContentService.getContentByTitleAndAuthor(title, author));
+    }
+
+    @GetMapping("/queryGoogle")
+    public ResponseEntity queryGoogleByTitleAndAuthor(@RequestParam String title, @RequestParam String author){
+        return ResponseEntity.ok(googleBookAPIService.queryGoogle(title, author));
     }
 
     @GetMapping("/getZineByCode")

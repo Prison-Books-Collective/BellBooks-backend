@@ -81,4 +81,8 @@ public class PackageContentService {
     public List<Zine> getAllZines() {
         return (List) zineRepository.findAll();
     }
+
+    public List<PackageContent> getContentByTitleAndAuthor(String title, String author) {
+        return bookRepository.findAllByTitleContainingAndAuthorsContaining(title, author);
+    }
 }

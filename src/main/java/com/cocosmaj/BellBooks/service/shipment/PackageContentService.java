@@ -5,6 +5,7 @@ import com.cocosmaj.BellBooks.model.shipment.*;
 import com.cocosmaj.BellBooks.repository.shipment.BookRepository;
 import com.cocosmaj.BellBooks.repository.shipment.PackageContentRepository;
 import com.cocosmaj.BellBooks.repository.shipment.ZineRepository;
+import com.google.common.base.Strings;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -83,6 +84,7 @@ public class PackageContentService {
     }
 
     public List<PackageContent> getContentByTitleAndAuthor(String title, String author) {
+        author = Strings.isNullOrEmpty(author) ? "" : author;
         return bookRepository.findAllByTitleContainingAndAuthorsContaining(title, author);
     }
 }

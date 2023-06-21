@@ -102,6 +102,7 @@ public class PackageContentController {
             .filter(book -> book.getClass() == Book.class)
             .map(book -> (Book) book);
         Stream<Book> booksFromGoogle = googleBookAPIService.queryGoogle(title, author).stream();
+
         List<Book> searchResults = Stream.concat(booksInDatabase, booksFromGoogle).collect(Collectors.toList());
         return ResponseEntity.ok(searchResults);
     }

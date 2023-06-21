@@ -105,12 +105,16 @@ public class GoogleBookAPIService {
     }
 
     public List<Book> queryGoogle(String title, String author) {
-        LinkedList books = new LinkedList();
+        List<Book> books = new LinkedList<>();
         title = title.replaceAll(" ", "+");
-        author = author.replaceAll(" ", "+");
+        author = Strings.isNullOrEmpty(author) ? "" : author.replaceAll(" ", "+");
+        String inAuthor = Strings.isNullOrEmpty(author)
+            ? ""
+            : String.format("+inauthor:%s", author);
+
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create(String.format("https://www.googleapis.com/books/v1/volumes?q=intitle:%s+inauthor:%s&maxResults=10", title, author)))
+                .uri(URI.create(String.format("https://www.googleapis.com/books/v1/volumes?q=intitle:%s%s&maxResults=10", title, inAuthor)))
                 .build();
 
         try {

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 @CrossOrigin
@@ -88,12 +89,12 @@ public class PackageContentController {
     }
 
     @GetMapping("/content")
-    public ResponseEntity getContentByTitleAndAuthor(@RequestParam String title, @RequestParam String author){
+    public ResponseEntity getContentByTitleAndAuthor(@RequestParam String title, @RequestParam @Nullable String author){
         return ResponseEntity.ok(packageContentService.getContentByTitleAndAuthor(title, author));
     }
 
     @GetMapping("/queryGoogle")
-    public ResponseEntity queryGoogleByTitleAndAuthor(@RequestParam String title, @RequestParam String author){
+    public ResponseEntity queryGoogleByTitleAndAuthor(@RequestParam String title, @RequestParam @Nullable String author){
         return ResponseEntity.ok(googleBookAPIService.queryGoogle(title, author));
     }
 

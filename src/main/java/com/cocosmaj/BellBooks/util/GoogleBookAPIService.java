@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -159,6 +160,8 @@ public class GoogleBookAPIService {
             }
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
+        } catch (JSONException e) {
+            return new ArrayList<>();
         }
 
         if(books.isEmpty()) throw new RuntimeException("Did not match any book found with Google.");

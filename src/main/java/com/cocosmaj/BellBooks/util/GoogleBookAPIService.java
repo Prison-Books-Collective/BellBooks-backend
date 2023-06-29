@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -105,12 +106,16 @@ public class GoogleBookAPIService {
     }
 
     public List<Book> queryGoogle(String title, String author) {
-        LinkedList books = new LinkedList();
+        List<Book> books = new LinkedList<>();
         title = title.replaceAll(" ", "+");
-        author = author.replaceAll(" ", "+");
+        author = Strings.isNullOrEmpty(author) ? "" : author.replaceAll(" ", "+");
+        String inAuthor = Strings.isNullOrEmpty(author)
+            ? ""
+            : String.format("+inauthor:%s", author);
+
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create(String.format("https://www.googleapis.com/books/v1/volumes?q=intitle:%s+inauthor:%s&maxResults=10", title, author)))
+                .uri(URI.create(String.format("https://www.googleapis.com/books/v1/volumes?q=intitle:%s%s&maxResults=10", title, inAuthor)))
                 .build();
 
         try {
@@ -155,6 +160,8 @@ public class GoogleBookAPIService {
             }
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
+        } catch (JSONException e) {
+            return new ArrayList<>();
         }
 
         if(books.isEmpty()) throw new RuntimeException("Did not match any book found with Google.");

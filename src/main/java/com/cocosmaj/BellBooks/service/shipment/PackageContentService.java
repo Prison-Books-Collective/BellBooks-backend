@@ -84,7 +84,10 @@ public class PackageContentService {
     }
 
     public List<PackageContent> getContentByTitleAndAuthor(String title, String author) {
-        author = Strings.isNullOrEmpty(author) ? "" : author;
-        return bookRepository.findAllByTitleContainingAndAuthorsContaining(title, author);
+        if (Strings.isNullOrEmpty(author)){
+            return bookRepository.findAllByTitleContaining(title);
+        } else {
+            return bookRepository.findAllByTitleContainingAndAuthorsContaining(title, author);
+        }
     }
 }

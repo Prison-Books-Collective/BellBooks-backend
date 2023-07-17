@@ -1,6 +1,7 @@
 package com.cocosmaj.BellBooks.service.recipient;
 
 import com.cocosmaj.BellBooks.exception.FacilityNotFoundException;
+import com.cocosmaj.BellBooks.model.enums.State;
 import com.cocosmaj.BellBooks.model.recipient.Facility;
 import com.cocosmaj.BellBooks.repository.recipient.FacilityRepository;
 import org.springframework.stereotype.Service;
@@ -44,5 +45,10 @@ public class FacilityService {
     public Facility updateFacility(Facility facility) throws FacilityNotFoundException{
         getFacilityById(facility.getId());
         return facilityRepository.save(facility);
+    }
+
+    public List<Facility> getFacilityByNameAndState(String name, State state) {
+        List<Facility> allByNameAndState = facilityRepository.findAllByNameAndState(name, state);
+        return allByNameAndState;
     }
 }

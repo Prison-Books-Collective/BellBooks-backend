@@ -53,4 +53,8 @@ public class ShipmentService {
         getShipment(shipment.getId());
         return this.shipmentRepository.save(shipment);
     }
+
+    public Long getShipmentCountBetweenDates(LocalDate date1, LocalDate date2) {
+        return shipmentRepository.countByDateBetween(date1, date2);
+    }
 }

@@ -13,4 +13,6 @@ public interface ShipmentRepository extends CrudRepository<Shipment, Long> {
     void deleteByRecipientId(Long id);
 
     List<Shipment> findAllByDate(LocalDate date);
+
+    Long countByDateBetween(LocalDate date1, LocalDate date2);
 }

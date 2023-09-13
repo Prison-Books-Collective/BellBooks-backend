@@ -1,12 +1,10 @@
 package com.cocosmaj.BellBooks.model.recipient;
 
-import com.cocosmaj.BellBooks.model.shipment.Shipment;
+import com.cocosmaj.BellBooks.model.enums.State;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @Setter

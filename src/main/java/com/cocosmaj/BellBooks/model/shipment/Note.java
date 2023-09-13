@@ -15,9 +15,6 @@ public class Note {
     @GeneratedValue
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private NoteType noteType;
-
     private String content;
 
     private LocalDate date;

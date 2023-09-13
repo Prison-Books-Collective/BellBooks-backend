@@ -1,12 +1,13 @@
 package com.cocosmaj.BellBooks.model.recipient;
 
+import com.cocosmaj.BellBooks.model.enums.SpecialRequestCategory;
+import com.cocosmaj.BellBooks.model.enums.SpecialRequestStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Getter
 @Setter

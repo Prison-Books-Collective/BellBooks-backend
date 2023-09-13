@@ -2,7 +2,7 @@ package com.cocosmaj.BellBooks.service.shipment;
 
 import com.cocosmaj.BellBooks.exception.ShipmentNotFoundException;
 import com.cocosmaj.BellBooks.model.shipment.Shipment;
-import com.cocosmaj.BellBooks.controller.repository.ShipmentRepository;
+import com.cocosmaj.BellBooks.repository.shipment.ShipmentRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -52,5 +52,9 @@ public class ShipmentService {
     public Shipment updateShipment(Shipment shipment) throws ShipmentNotFoundException {
         getShipment(shipment.getId());
         return this.shipmentRepository.save(shipment);
+    }
+
+    public Long getShipmentCountBetweenDates(LocalDate date1, LocalDate date2) {
+        return shipmentRepository.countByDateBetween(date1, date2);
     }
 }

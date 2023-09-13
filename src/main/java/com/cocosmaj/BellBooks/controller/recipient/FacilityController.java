@@ -1,6 +1,7 @@
 package com.cocosmaj.BellBooks.controller.recipient;
 
 import com.cocosmaj.BellBooks.exception.FacilityNotFoundException;
+import com.cocosmaj.BellBooks.model.enums.State;
 import com.cocosmaj.BellBooks.model.recipient.Facility;
 import com.cocosmaj.BellBooks.service.recipient.FacilityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,11 @@ public class FacilityController {
         } catch (FacilityNotFoundException exception){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/getFacilityByName")
+    public ResponseEntity getFacilityByNameAndState(@RequestParam String name, @RequestParam State state){
+            return ResponseEntity.ok(facilityService.getFacilityByNameAndState(name, state));
     }
 
     @DeleteMapping("/deleteFacility")

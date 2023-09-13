@@ -3,12 +3,10 @@ package com.cocosmaj.BellBooks.controller.shipment;
 import com.cocosmaj.BellBooks.exception.ShipmentNotFoundException;
 import com.cocosmaj.BellBooks.model.shipment.Shipment;
 import com.cocosmaj.BellBooks.service.shipment.ShipmentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 @CrossOrigin
@@ -70,6 +68,9 @@ public class ShipmentController {
         return ResponseEntity.ok(shipmentService.getShipmentsByDate(LocalDate.parse(date)));
     }
 
-
+    @GetMapping("/getShipmentCountBetweenDates")
+    public ResponseEntity getShipmentCountBetweenDates(@RequestParam String date1, String date2){
+        return ResponseEntity.ok(shipmentService.getShipmentCountBetweenDates(LocalDate.parse(date1), LocalDate.parse((date2))));
+    }
 
 }

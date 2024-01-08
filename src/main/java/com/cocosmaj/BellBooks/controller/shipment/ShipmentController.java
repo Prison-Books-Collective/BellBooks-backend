@@ -48,7 +48,6 @@ public class ShipmentController {
     public ResponseEntity getAllShipmentsByRecipient(@RequestParam Long id){
         return ResponseEntity.ok(shipmentService.getAllShipmentsByRecipient(id));
     }
-
     //get all shipments by date
 
     @DeleteMapping("/deleteShipment")

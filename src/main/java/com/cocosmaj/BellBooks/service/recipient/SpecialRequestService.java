@@ -8,6 +8,8 @@ import com.cocosmaj.BellBooks.repository.recipient.SpecialRequestRepository;
 import com.cocosmaj.BellBooks.util.RecipientHelper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SpecialRequestService {
 
@@ -25,5 +27,9 @@ public class SpecialRequestService {
         databaseRecipient.getSpecialRequests().add(savedSpecialRequest);
         recipientRepository.save(databaseRecipient);
         return savedSpecialRequest;
+    }
+
+    public List<SpecialRequest> getAllSpecialRequests() {
+        return (List) specialRequestRepository.findAll();
     }
 }

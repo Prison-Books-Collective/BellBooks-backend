@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -20,22 +21,26 @@ public class Facility {
     @GeneratedValue
     private Long id;
 
+    @NotNull
     @Column(nullable = false, length = 100)
     private String name;
 
     private String additionalInfo;
 
+    @NotNull
     @Column(nullable = false, length = 100)
     private String street;
 
+    @NotNull
     @Column(nullable = false, length = 100)
     private String city;
 
+    @NotNull
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private State state;
 
+    @NotNull
     @Column(nullable = false, length=10)
     private String zip;
-
 }

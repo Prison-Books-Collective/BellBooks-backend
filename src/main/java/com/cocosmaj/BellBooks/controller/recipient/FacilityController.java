@@ -16,49 +16,49 @@ public class FacilityController {
 
     private final FacilityService facilityService;
 
-    public FacilityController(FacilityService facilityService){
+    public FacilityController(FacilityService facilityService) {
         this.facilityService = facilityService;
     }
 
     @PostMapping("/addFacility")
-    public ResponseEntity<Facility> addFacility(@RequestBody Facility facility){
+    public ResponseEntity<Facility> addFacility(@RequestBody Facility facility) {
         return ResponseEntity.ok(facilityService.addFacility(facility));
     }
 
     @GetMapping("/getAllFacilities")
-    public ResponseEntity<List<Facility>> getAllFacilities(){
+    public ResponseEntity<List<Facility>> getAllFacilities() {
         return ResponseEntity.ok(facilityService.getAllFacilities());
     }
 
     @GetMapping("/getFacility")
-    public ResponseEntity<Facility> getFacilityById(@RequestParam Long id){
+    public ResponseEntity<Facility> getFacilityById(@RequestParam Long id) {
         try {
             return ResponseEntity.ok(facilityService.getFacilityById(id));
-        } catch (FacilityNotFoundException exception){
+        } catch (FacilityNotFoundException exception) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/getFacilityByName")
-    public ResponseEntity<List<Facility>> getFacilityByNameAndState(@RequestParam String name, @RequestParam State state){
-            return ResponseEntity.ok(facilityService.getFacilityByNameAndState(name, state));
+    public ResponseEntity<List<Facility>> getFacilityByNameAndState(@RequestParam String name, @RequestParam State state) {
+        return ResponseEntity.ok(facilityService.getFacilityByNameAndState(name, state));
     }
 
     @DeleteMapping("/deleteFacility")
-    public ResponseEntity<Void> deleteFacility(@RequestParam Long id){
+    public ResponseEntity<Void> deleteFacility(@RequestParam Long id) {
         try {
             facilityService.deleteFacility(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (FacilityNotFoundException exception){
+        } catch (FacilityNotFoundException exception) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("/updateFacility")
-    public ResponseEntity<Facility> updateFacility(@RequestBody Facility facility){
+    public ResponseEntity<Facility> updateFacility(@RequestBody Facility facility) {
         try {
             return ResponseEntity.ok(facilityService.updateFacility(facility));
-        } catch (FacilityNotFoundException exception){
+        } catch (FacilityNotFoundException exception) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

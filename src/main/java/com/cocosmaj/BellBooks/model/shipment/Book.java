@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 
 @Getter
 @Setter
-@Entity(name="book")
+@Entity(name = "book")
 @DiscriminatorValue("book")
 public class Book extends PackageContent {
 

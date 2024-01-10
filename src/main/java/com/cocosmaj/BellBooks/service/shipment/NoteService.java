@@ -10,11 +10,11 @@ public class NoteService {
     private final NoteRepository noteRepository;
 
     @SuppressWarnings("unused")
-    public NoteService(NoteRepository noteRepository){
+    public NoteService(NoteRepository noteRepository) {
         this.noteRepository = noteRepository;
     }
 
-    public Note addNote(Note note){
+    public Note addNote(Note note) {
         return this.noteRepository.save(note);
     }
 

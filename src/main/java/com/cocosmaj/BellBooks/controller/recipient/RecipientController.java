@@ -17,17 +17,17 @@ public class RecipientController {
 
     private final RecipientService recipientService;
 
-    public RecipientController( RecipientService recipientService){
+    public RecipientController(RecipientService recipientService) {
         this.recipientService = recipientService;
     }
 
     @PostMapping("/addRecipient")
-    public ResponseEntity<Recipient> addRecipient(@RequestBody Recipient recipient){
+    public ResponseEntity<Recipient> addRecipient(@RequestBody Recipient recipient) {
         return ResponseEntity.ok(this.recipientService.addRecipient(recipient));
     }
 
     @PutMapping("/updateRecipient")
-    public ResponseEntity<Recipient> updateRecipient(@RequestBody Recipient recipient){
+    public ResponseEntity<Recipient> updateRecipient(@RequestBody Recipient recipient) {
         try {
             return ResponseEntity.ok(this.recipientService.updateRecipient(recipient));
         } catch (RecipientNotFoundException exception) {
@@ -36,28 +36,29 @@ public class RecipientController {
     }
 
     @GetMapping("getRecipients")
-    public ResponseEntity<List<Recipient>> getRecipients(@RequestParam String firstName, @RequestParam String lastName){
+    public ResponseEntity<List<Recipient>> getRecipients(@RequestParam String firstName, @RequestParam String lastName) {
         return ResponseEntity.ok(this.recipientService.getRecipients(firstName, lastName));
     }
+
     @GetMapping("/getRecipient")
     public ResponseEntity<Recipient> getRecipient(@RequestParam Long id) {
         try {
             return ResponseEntity.ok(this.recipientService.getRecipientById(id));
-        } catch (RecipientNotFoundException exception){
+        } catch (RecipientNotFoundException exception) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/getAllRecipients")
-    public ResponseEntity<List<Recipient>> getAllRecipients(){
+    public ResponseEntity<List<Recipient>> getAllRecipients() {
         return ResponseEntity.ok(this.recipientService.getAllRecipients());
     }
 
     @GetMapping("/getRecipientByAssignedId")
-    public ResponseEntity<Recipient> getRecipientByAssignedId(@RequestParam String assignedId){
+    public ResponseEntity<Recipient> getRecipientByAssignedId(@RequestParam String assignedId) {
         try {
             return ResponseEntity.ok(this.recipientService.getRecipientByAssignedId(assignedId));
-        } catch (RecipientNotFoundException exception){
+        } catch (RecipientNotFoundException exception) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -68,11 +69,11 @@ public class RecipientController {
     }
 
     @DeleteMapping("/deleteRecipient")
-    public ResponseEntity<Void> deleteRecipient(@RequestParam Long id){
-        try{
+    public ResponseEntity<Void> deleteRecipient(@RequestParam Long id) {
+        try {
             this.recipientService.deleteRecipient(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (RecipientNotFoundException exception){
+        } catch (RecipientNotFoundException exception) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

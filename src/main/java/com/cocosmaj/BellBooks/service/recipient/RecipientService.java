@@ -20,7 +20,7 @@ public class RecipientService {
     private final RecipientRepository recipientRepository;
 
     @SuppressWarnings("unused")
-    public RecipientService(RecipientRepository recipientRepository){
+    public RecipientService(RecipientRepository recipientRepository) {
         this.recipientRepository = recipientRepository;
     }
 
@@ -45,7 +45,7 @@ public class RecipientService {
         return recipientRepository.save(databaseRecipient);
     }
 
-    public void deleteRecipient(Long id) throws RecipientNotFoundException{
+    public void deleteRecipient(Long id) throws RecipientNotFoundException {
         getRecipientById(id);
         recipientRepository.deleteById(id);
     }
@@ -56,7 +56,7 @@ public class RecipientService {
 
     public Recipient getRecipientByAssignedId(String assignedId) throws RecipientNotFoundException {
         Optional<Recipient> byId = recipientRepository.findByAssignedId(assignedId);
-        if (byId.isEmpty()){
+        if (byId.isEmpty()) {
             throw new RecipientNotFoundException();
         } else {
             return byId.get();
@@ -64,7 +64,7 @@ public class RecipientService {
     }
 
     public String getRecipientLocation(String id) throws IOException, IndexOutOfBoundsException {
-        if (id.length()==7) {
+        if (id.length() == 7) {
             try {
                 HtmlPage page;
                 try (WebClient webClient = new WebClient(BrowserVersion.FIREFOX)) {

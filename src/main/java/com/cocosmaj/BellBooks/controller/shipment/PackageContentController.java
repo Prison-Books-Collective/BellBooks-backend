@@ -20,7 +20,6 @@ import java.util.stream.Stream;
 @RestController
 public class PackageContentController {
 
-
     private final PackageContentService packageContentService;
     private final GoogleBookAPIService googleBookAPIService;
 
@@ -29,7 +28,6 @@ public class PackageContentController {
         this.googleBookAPIService = googleBookAPIService;
     }
 
-    //get content by ID
     @GetMapping("/getContent")
     public ResponseEntity<PackageContent> getContent(@RequestParam Long id) {
         try {

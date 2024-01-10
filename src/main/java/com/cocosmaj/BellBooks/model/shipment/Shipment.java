@@ -36,6 +36,7 @@ public class Shipment {
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<PackageContent> content;
 
+    @SuppressWarnings("unused")
     @JsonBackReference
     public Recipient getRecipient() {
         return recipient;

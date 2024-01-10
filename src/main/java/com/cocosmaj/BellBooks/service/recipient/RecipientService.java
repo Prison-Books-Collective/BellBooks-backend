@@ -3,7 +3,6 @@ package com.cocosmaj.BellBooks.service.recipient;
 import com.cocosmaj.BellBooks.exception.RecipientNotFoundException;
 import com.cocosmaj.BellBooks.model.recipient.Recipient;
 import com.cocosmaj.BellBooks.repository.recipient.RecipientRepository;
-import com.cocosmaj.BellBooks.util.RecipientHelper;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
@@ -18,9 +17,10 @@ import java.util.Optional;
 @Service
 public class RecipientService {
 
-    private RecipientRepository recipientRepository;
+    private final RecipientRepository recipientRepository;
 
-    public RecipientService( RecipientRepository recipientRepository){
+    @SuppressWarnings("unused")
+    public RecipientService(RecipientRepository recipientRepository){
         this.recipientRepository = recipientRepository;
     }
 
@@ -29,7 +29,10 @@ public class RecipientService {
     }
 
     public Recipient updateRecipient(Recipient newRecipientInfo) throws RecipientNotFoundException {
-        Recipient databaseRecipient = RecipientHelper.extractRecipient(recipientRepository.findById(newRecipientInfo.getId()));
+        Recipient databaseRecipient = recipientRepository
+            .findById(newRecipientInfo.getId())
+            .orElseThrow(RecipientNotFoundException::new);
+
         if (!databaseRecipient.getAssignedId().equals(newRecipientInfo.getAssignedId())) {
             databaseRecipient.setAssignedId(newRecipientInfo.getAssignedId());
         }
@@ -48,7 +51,7 @@ public class RecipientService {
     }
 
     public Recipient getRecipientById(Long id) throws RecipientNotFoundException {
-        return RecipientHelper.extractRecipient(recipientRepository.findById(id));
+        return recipientRepository.findById(id).orElseThrow(RecipientNotFoundException::new);
     }
 
     public Recipient getRecipientByAssignedId(String assignedId) throws RecipientNotFoundException {
@@ -63,8 +66,10 @@ public class RecipientService {
     public String getRecipientLocation(String id) throws IOException, IndexOutOfBoundsException {
         if (id.length()==7) {
             try {
-                WebClient webClient = new WebClient(BrowserVersion.FIREFOX);
-                HtmlPage page = webClient.getPage("https://webapps.doc.state.nc.us/opi/viewoffender.do?method=view&offenderID=" + id);
+                HtmlPage page;
+                try (WebClient webClient = new WebClient(BrowserVersion.FIREFOX)) {
+                    page = webClient.getPage("https://webapps.doc.state.nc.us/opi/viewoffender.do?method=view&offenderID=" + id);
+                }
                 HtmlTable recipientInfoTable = (HtmlTable) page.getByXPath("//table[contains(@class, 'displaydatatable')]").get(0);
 
                 List<HtmlTableRow> tableRows = recipientInfoTable.getByXPath("//tr");
@@ -87,7 +92,7 @@ public class RecipientService {
     }
 
     public List<Recipient> getAllRecipients() {
-        return (List) recipientRepository.findAll();
+        return (List<Recipient>) recipientRepository.findAll();
     }
 
     public List<Recipient> getRecipients(String firstName, String lastName) {

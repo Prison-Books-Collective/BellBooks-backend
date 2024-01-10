@@ -43,6 +43,7 @@ public class Recipient {
     @OneToMany
     private List<SpecialRequest> specialRequests;
 
+    @SuppressWarnings("unused")
     public Recipient() {
     }
 

@@ -7,8 +7,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class NoteService {
 
-    private NoteRepository noteRepository;
+    private final NoteRepository noteRepository;
 
+    @SuppressWarnings("unused")
     public NoteService(NoteRepository noteRepository){
         this.noteRepository = noteRepository;
     }

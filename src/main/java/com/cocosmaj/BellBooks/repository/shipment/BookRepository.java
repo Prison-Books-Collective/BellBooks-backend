@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+@SuppressWarnings("unused")
 @Repository
 public interface BookRepository extends PackageContentRepository<Book> {
 
@@ -18,4 +19,5 @@ public interface BookRepository extends PackageContentRepository<Book> {
 
     List<PackageContent> findAllByTitleContainingAndAuthorsContaining(String title, String author);
     List<Book> findByISBN10IsNullAndISBN13IsNull();
+
 }

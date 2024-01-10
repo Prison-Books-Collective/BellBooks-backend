@@ -13,19 +13,19 @@ import java.util.List;
 @RestController
 public class SpecialRequestController {
 
-    private SpecialRequestService specialRequestService;
+    private final SpecialRequestService specialRequestService;
 
     public SpecialRequestController( SpecialRequestService specialRequestService){
         this.specialRequestService = specialRequestService;
     }
 
     @PostMapping("/addSpecialRequest")
-    public ResponseEntity addSpecialRequest(@RequestBody SpecialRequest specialRequest){
+    public ResponseEntity<SpecialRequest> addSpecialRequest(@RequestBody SpecialRequest specialRequest){
         try {
             return ResponseEntity.ok(this.specialRequestService.addSpecialRequest(specialRequest));
         }
         catch (RecipientNotFoundException e){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
     }
 

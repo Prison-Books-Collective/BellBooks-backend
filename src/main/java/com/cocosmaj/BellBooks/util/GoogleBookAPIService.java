@@ -1,7 +1,7 @@
 package com.cocosmaj.BellBooks.util;
 
 import com.cocosmaj.BellBooks.model.shipment.Book;
-import com.cocosmaj.BellBooks.repository.shipment.BookRepository;
+import com.cocosmaj.BellBooks.model.shipment.PackageContent;
 import com.cocosmaj.BellBooks.repository.shipment.PackageContentRepository;
 import com.google.common.base.Strings;
 import org.json.JSONArray;
@@ -22,16 +22,13 @@ import java.util.stream.Collectors;
 @Service
 public class GoogleBookAPIService {
 
-    private PackageContentRepository packageContentRepository;
+    private final PackageContentRepository<PackageContent> packageContentRepository;
 
-    private BookRepository bookRepository;
+    private final HttpClient httpClient;
 
-    private HttpClient httpClient;
-
-
-    public GoogleBookAPIService(PackageContentRepository packageContentRepository, BookRepository bookRepository){
+    @SuppressWarnings("unused")
+    public GoogleBookAPIService(PackageContentRepository<PackageContent> packageContentRepository){
         this.packageContentRepository = packageContentRepository;
-        this.bookRepository = bookRepository;
         this.httpClient = HttpClient.newHttpClient();
     }
 
@@ -93,7 +90,7 @@ public class GoogleBookAPIService {
         }
 
         if(book.getTitle() == null) throw new RuntimeException("Book from Google does not have a title");
-        return (Book) packageContentRepository.save(book);
+        return packageContentRepository.save(book);
     }
 
     public List<Book> queryGoogle(String title, String author) {

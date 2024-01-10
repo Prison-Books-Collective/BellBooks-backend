@@ -16,17 +16,18 @@ import java.util.Optional;
 @Service
 public class PackageContentService {
 
+    private final PackageContentRepository<PackageContent> packageContentRepository;
 
-    private PackageContentRepository<PackageContent> packageContentRepository;
+    private final ZineRepository zineRepository;
 
-    private ZineRepository zineRepository;
+    private final BookRepository bookRepository;
 
-    private BookRepository bookRepository;
-
-
-
-
-    public PackageContentService(PackageContentRepository packageContentRepository, ZineRepository zineRepository, BookRepository bookRepository){
+    @SuppressWarnings("unused")
+    public PackageContentService(
+        PackageContentRepository<PackageContent> packageContentRepository,
+        ZineRepository zineRepository,
+        BookRepository bookRepository
+    ) {
         this.packageContentRepository = packageContentRepository;
         this.zineRepository = zineRepository;
         this.bookRepository = bookRepository;
@@ -37,15 +38,13 @@ public class PackageContentService {
     }
 
 
-
     public PackageContent getContent(Long id) throws PackageContentNotFoundException {
         Optional<PackageContent> byId = packageContentRepository.findById(id);
-        if (byId.isPresent()){
+        if (byId.isPresent()) {
             return byId.get();
         } else {
             throw new PackageContentNotFoundException();
         }
-
     }
 
     public PackageContent updateContent(PackageContent packageContent) throws PackageContentNotFoundException {
@@ -59,7 +58,7 @@ public class PackageContentService {
     }
 
     public List<PackageContent> getAllContent() {
-        return (List) packageContentRepository.findAll();
+        return (List<PackageContent>) packageContentRepository.findAll();
     }
 
     public Optional<Book> getBookByIsbn13(String isbn13) {
@@ -83,11 +82,11 @@ public class PackageContentService {
     }
 
     public List<Zine> getAllZines() {
-        return (List) zineRepository.findAll();
+        return (List<Zine>) zineRepository.findAll();
     }
 
     public List<PackageContent> getContentByTitleAndAuthor(String title, String author) {
-        if (Strings.isNullOrEmpty(author)){
+        if (Strings.isNullOrEmpty(author)) {
             return bookRepository.findAllByTitleContaining(title);
         } else {
             return bookRepository.findAllByTitleContainingAndAuthorsContaining(title, author);

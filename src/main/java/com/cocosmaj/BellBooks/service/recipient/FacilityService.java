@@ -13,18 +13,18 @@ import java.util.Optional;
 public class FacilityService {
 
 
-    private FacilityRepository facilityRepository;
+    private final FacilityRepository facilityRepository;
 
+    @SuppressWarnings("unused")
     public FacilityService( FacilityRepository facilityRepository){
         this.facilityRepository = facilityRepository;
     }
     public Facility addFacility(Facility facility) {
-
         return facilityRepository.save(facility);
     }
 
     public List<Facility> getAllFacilities() {
-        return (List) facilityRepository.findAllByOrderByName();
+        return facilityRepository.findAllByOrderByName();
     }
 
     public Facility getFacilityById(Long id) throws FacilityNotFoundException {
@@ -48,7 +48,6 @@ public class FacilityService {
     }
 
     public List<Facility> getFacilityByNameAndState(String name, State state) {
-        List<Facility> allByNameAndState = facilityRepository.findAllByNameAndState(name, state);
-        return allByNameAndState;
+        return facilityRepository.findAllByNameAndState(name, state);
     }
 }

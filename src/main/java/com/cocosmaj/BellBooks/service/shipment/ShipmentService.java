@@ -13,9 +13,10 @@ import java.util.Optional;
 public class ShipmentService {
 
 
-    private ShipmentRepository shipmentRepository;
+    private final ShipmentRepository shipmentRepository;
 
-    public ShipmentService( ShipmentRepository shipmentRepository){
+    @SuppressWarnings("unused")
+    public ShipmentService(ShipmentRepository shipmentRepository){
         this.shipmentRepository = shipmentRepository;
     }
 

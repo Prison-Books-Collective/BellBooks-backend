@@ -20,13 +20,13 @@ public class Recipient {
     private Long id;
 
     @NotNull
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String firstName;
 
     private String middleName;
 
     @NotNull
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String lastName;
 
     @Column(unique = true)

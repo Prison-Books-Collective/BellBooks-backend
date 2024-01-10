@@ -6,9 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PackageContentRepository<T extends PackageContent> extends CrudRepository<T, Long> {
-
-
-
-
-
 }

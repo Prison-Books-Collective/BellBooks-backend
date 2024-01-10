@@ -17,17 +17,17 @@ public class ShipmentController {
 
     private final ShipmentService shipmentService;
 
-    public ShipmentController( ShipmentService shipmentService){
+    public ShipmentController(ShipmentService shipmentService) {
         this.shipmentService = shipmentService;
     }
 
     @PostMapping("/addShipment")
-    public ResponseEntity<Shipment> addShipment(@RequestBody Shipment shipment){
-            return ResponseEntity.ok(shipmentService.addShipment(shipment));
+    public ResponseEntity<Shipment> addShipment(@RequestBody Shipment shipment) {
+        return ResponseEntity.ok(shipmentService.addShipment(shipment));
     }
 
     @PutMapping("/updateShipment")
-    public ResponseEntity<Shipment> updateShipment(@RequestBody Shipment shipment){
+    public ResponseEntity<Shipment> updateShipment(@RequestBody Shipment shipment) {
         try {
             return ResponseEntity.ok(shipmentService.updateShipment(shipment));
         } catch (ShipmentNotFoundException e) {
@@ -36,40 +36,40 @@ public class ShipmentController {
     }
 
     @GetMapping("/getShipment")
-    public ResponseEntity<Shipment> getShipment(@RequestParam Long id){
+    public ResponseEntity<Shipment> getShipment(@RequestParam Long id) {
         try {
             return ResponseEntity.ok(shipmentService.getShipment(id));
-         } catch (ShipmentNotFoundException exception){
+        } catch (ShipmentNotFoundException exception) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
     }
 
     @GetMapping("/getAllShipmentsByRecipient")
-    public ResponseEntity<List<Shipment>> getAllShipmentsByRecipient(@RequestParam Long id){
+    public ResponseEntity<List<Shipment>> getAllShipmentsByRecipient(@RequestParam Long id) {
         return ResponseEntity.ok(shipmentService.getAllShipmentsByRecipient(id));
     }
     //get all shipments by date
 
     @DeleteMapping("/deleteShipment")
-    public ResponseEntity<Void> deleteShipment(@RequestParam Long id){
+    public ResponseEntity<Void> deleteShipment(@RequestParam Long id) {
         shipmentService.deleteShipment(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteAllShipmentsByRecipientId")
-    public ResponseEntity<Void> deleteShipmentsByRecipient(@RequestParam Long id){
+    public ResponseEntity<Void> deleteShipmentsByRecipient(@RequestParam Long id) {
         this.shipmentService.deleteShipmentsByRecipient(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/getShipmentsByDate")
-    public ResponseEntity<List<Shipment>> getShipmentsByDate(@RequestParam String date){
+    public ResponseEntity<List<Shipment>> getShipmentsByDate(@RequestParam String date) {
         return ResponseEntity.ok(shipmentService.getShipmentsByDate(LocalDate.parse(date)));
     }
 
     @GetMapping("/getShipmentCountBetweenDates")
-    public ResponseEntity<Long> getShipmentCountBetweenDates(@RequestParam String date1, String date2){
+    public ResponseEntity<Long> getShipmentCountBetweenDates(@RequestParam String date1, String date2) {
         return ResponseEntity.ok(shipmentService.getShipmentCountBetweenDates(LocalDate.parse(date1), LocalDate.parse((date2))));
     }
 

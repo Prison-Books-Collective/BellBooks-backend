@@ -16,7 +16,7 @@ public class SpecialRequestService {
     private final RecipientRepository recipientRepository;
 
     @SuppressWarnings("unused")
-    public SpecialRequestService(SpecialRequestRepository specialRequestRepository, RecipientRepository recipientRepository){
+    public SpecialRequestService(SpecialRequestRepository specialRequestRepository, RecipientRepository recipientRepository) {
         this.specialRequestRepository = specialRequestRepository;
         this.recipientRepository = recipientRepository;
     }

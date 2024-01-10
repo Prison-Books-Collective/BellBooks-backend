@@ -18,6 +18,7 @@ public interface BookRepository extends PackageContentRepository<Book> {
     List<PackageContent> findAllByTitleContaining(String title);
 
     List<PackageContent> findAllByTitleContainingAndAuthorsContaining(String title, String author);
+
     List<Book> findByISBN10IsNullAndISBN13IsNull();
 
 }

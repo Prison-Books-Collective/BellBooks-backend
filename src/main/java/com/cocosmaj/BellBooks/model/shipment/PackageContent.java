@@ -13,8 +13,8 @@ import javax.validation.constraints.NotNull;
 @Entity
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value=Book.class, name = "book"),
-        @JsonSubTypes.Type(value=Zine.class, name = "zine")
+    @JsonSubTypes.Type(value = Book.class, name = "book"),
+    @JsonSubTypes.Type(value = Zine.class, name = "zine")
 })
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type")

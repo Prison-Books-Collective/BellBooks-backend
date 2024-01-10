@@ -10,10 +10,10 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @Entity
-@Table(name="facility", uniqueConstraints = {
-        @UniqueConstraint(name="uniqueFacility", columnNames = {
-                "name", "street", "state", "zip"
-        })
+@Table(name = "facility", uniqueConstraints = {
+    @UniqueConstraint(name = "uniqueFacility", columnNames = {
+        "name", "street", "state", "zip"
+    })
 })
 public class Facility {
 

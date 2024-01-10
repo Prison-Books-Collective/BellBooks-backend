@@ -14,12 +14,12 @@ public class NoteController {
 
     private final NoteService noteService;
 
-    public NoteController(NoteService noteService){
+    public NoteController(NoteService noteService) {
         this.noteService = noteService;
     }
 
     @PostMapping("/addNote")
-    public ResponseEntity<Note> addNote(@RequestBody Note note){
+    public ResponseEntity<Note> addNote(@RequestBody Note note) {
         return ResponseEntity.ok(noteService.addNote(note));
     }
 

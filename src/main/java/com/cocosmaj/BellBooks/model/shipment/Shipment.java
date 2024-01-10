@@ -23,11 +23,11 @@ public class Shipment {
     private LocalDate date;
 
     @ManyToOne
-    @JoinColumn(name="facility_id")
+    @JoinColumn(name = "facility_id")
     private Facility facility;
 
     @ManyToOne
-    @JoinColumn(name="recipient_id")
+    @JoinColumn(name = "recipient_id")
     private Recipient recipient;
 
     @OneToMany

@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -24,5 +24,6 @@ public abstract class PackageContent {
     @GeneratedValue
     private Long id;
 
+    @NotNull
     private String title;
 }

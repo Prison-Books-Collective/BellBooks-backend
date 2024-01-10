@@ -3,7 +3,8 @@ package com.cocosmaj.BellBooks.model.shipment;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
 @Getter

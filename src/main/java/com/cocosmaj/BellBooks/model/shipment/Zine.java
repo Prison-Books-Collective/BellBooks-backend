@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-@Entity(name="zine")
+@Entity(name = "zine")
 @DiscriminatorValue("zine")
 public class Zine extends PackageContent {
     @NotNull

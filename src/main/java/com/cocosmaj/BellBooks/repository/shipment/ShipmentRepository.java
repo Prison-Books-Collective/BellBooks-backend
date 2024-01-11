@@ -6,8 +6,9 @@ import org.springframework.data.repository.CrudRepository;
 import java.time.LocalDate;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public interface ShipmentRepository extends CrudRepository<Shipment, Long> {
-    public List<Shipment> findAllByRecipientId(Long recipientId);
+    List<Shipment> findAllByRecipientId(Long recipientId);
 
     void deleteByRecipientId(Long id);
 

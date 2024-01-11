@@ -33,7 +33,7 @@ public class SpecialRequest {
     private SpecialRequestStatus status;
 
     @ManyToOne
-    @JoinColumn(name="recipient_id")
+    @JoinColumn(name = "recipient_id")
     private Recipient recipient;
 
     @JsonBackReference

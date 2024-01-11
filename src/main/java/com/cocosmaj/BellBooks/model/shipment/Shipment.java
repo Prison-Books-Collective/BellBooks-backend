@@ -23,11 +23,11 @@ public class Shipment {
     private LocalDate date;
 
     @ManyToOne
-    @JoinColumn(name="facility_id")
+    @JoinColumn(name = "facility_id")
     private Facility facility;
 
     @ManyToOne
-    @JoinColumn(name="recipient_id")
+    @JoinColumn(name = "recipient_id")
     private Recipient recipient;
 
     @OneToMany
@@ -36,6 +36,7 @@ public class Shipment {
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<PackageContent> content;
 
+    @SuppressWarnings("unused")
     @JsonBackReference
     public Recipient getRecipient() {
         return recipient;

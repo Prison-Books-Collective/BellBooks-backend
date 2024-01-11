@@ -2,7 +2,7 @@ package com.cocosmaj.BellBooks.model.recipient;
 
 import com.cocosmaj.BellBooks.model.enums.SpecialRequestCategory;
 import com.cocosmaj.BellBooks.model.enums.SpecialRequestStatus;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,12 +32,8 @@ public class SpecialRequest {
     @Enumerated(EnumType.STRING)
     private SpecialRequestStatus status;
 
+    @JsonIgnoreProperties({"specialRequests", "shipments"})
     @ManyToOne
     @JoinColumn(name = "recipient_id")
     private Recipient recipient;
-
-    @JsonBackReference
-    public Recipient getRecipient() {
-        return recipient;
-    }
 }

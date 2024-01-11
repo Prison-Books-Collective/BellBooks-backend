@@ -1,6 +1,7 @@
 package com.cocosmaj.BellBooks.model.recipient;
 
 import com.cocosmaj.BellBooks.model.shipment.Shipment;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,8 +40,9 @@ public class Recipient {
     @OneToMany(mappedBy = "recipient")
     private List<Shipment> shipments;
 
+    @JsonIgnoreProperties("recipient")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    @OneToMany
+    @OneToMany(mappedBy = "recipient")
     private List<SpecialRequest> specialRequests;
 
     @SuppressWarnings("unused")

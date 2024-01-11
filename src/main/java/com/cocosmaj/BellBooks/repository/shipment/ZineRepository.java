@@ -5,8 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@SuppressWarnings("unused")
 @Repository
 public interface ZineRepository extends PackageContentRepository<Zine> {
-
     Optional<Zine> findByCode(String code);
 }

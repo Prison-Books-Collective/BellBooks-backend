@@ -12,10 +12,10 @@ import java.util.Optional;
 @Service
 public class ShipmentService {
 
+    private final ShipmentRepository shipmentRepository;
 
-    private ShipmentRepository shipmentRepository;
-
-    public ShipmentService( ShipmentRepository shipmentRepository){
+    @SuppressWarnings("unused")
+    public ShipmentService(ShipmentRepository shipmentRepository) {
         this.shipmentRepository = shipmentRepository;
     }
 
@@ -25,7 +25,7 @@ public class ShipmentService {
 
     public Shipment getShipment(Long id) throws ShipmentNotFoundException {
         Optional<Shipment> byId = shipmentRepository.findById(id);
-        if (byId.isPresent()){
+        if (byId.isPresent()) {
             return byId.get();
         } else {
             throw new ShipmentNotFoundException();

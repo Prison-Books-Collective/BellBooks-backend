@@ -12,15 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 public class NoteController {
 
-    private NoteService noteService;
+    private final NoteService noteService;
 
-    public NoteController(NoteService noteService){
+    public NoteController(NoteService noteService) {
         this.noteService = noteService;
     }
 
     @PostMapping("/addNote")
-    public ResponseEntity addNote(@RequestBody Note note){
-        System.out.println(note.getContent());
+    public ResponseEntity<Note> addNote(@RequestBody Note note) {
         return ResponseEntity.ok(noteService.addNote(note));
     }
 

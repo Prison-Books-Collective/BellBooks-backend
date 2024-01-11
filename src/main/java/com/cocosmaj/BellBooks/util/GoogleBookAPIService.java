@@ -1,7 +1,7 @@
 package com.cocosmaj.BellBooks.util;
 
 import com.cocosmaj.BellBooks.model.shipment.Book;
-import com.cocosmaj.BellBooks.repository.shipment.BookRepository;
+import com.cocosmaj.BellBooks.model.shipment.PackageContent;
 import com.cocosmaj.BellBooks.repository.shipment.PackageContentRepository;
 import com.google.common.base.Strings;
 import org.json.JSONArray;
@@ -22,25 +22,22 @@ import java.util.stream.Collectors;
 @Service
 public class GoogleBookAPIService {
 
-    private PackageContentRepository packageContentRepository;
+    private final PackageContentRepository<PackageContent> packageContentRepository;
 
-    private BookRepository bookRepository;
+    private final HttpClient httpClient;
 
-    private HttpClient httpClient;
-
-
-    public GoogleBookAPIService(PackageContentRepository packageContentRepository, BookRepository bookRepository){
+    @SuppressWarnings("unused")
+    public GoogleBookAPIService(PackageContentRepository<PackageContent> packageContentRepository) {
         this.packageContentRepository = packageContentRepository;
-        this.bookRepository = bookRepository;
         this.httpClient = HttpClient.newHttpClient();
     }
 
     public Book queryGoogle(String isbn) {
         Book book = new Book();
         HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(String.format("https://www.googleapis.com/books/v1/volumes?q=isbn:%s", isbn)))
-                .build();
+            .GET()
+            .uri(URI.create(String.format("https://www.googleapis.com/books/v1/volumes?q=isbn:%s", isbn)))
+            .build();
 
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -50,20 +47,20 @@ public class GoogleBookAPIService {
             for (int index = 0; index < items.length(); index++) {
                 JSONObject item = items.getJSONObject(index);
 
-                if(!item.has("volumeInfo")) continue;
+                if (!item.has("volumeInfo")) continue;
                 JSONObject volumeInfo = item.getJSONObject("volumeInfo");
 
-                if(!volumeInfo.has("title")) continue;
+                if (!volumeInfo.has("title")) continue;
                 book.setTitle(volumeInfo.getString("title"));
 
-                if(volumeInfo.has("authors")) {
+                if (volumeInfo.has("authors")) {
                     List<String> authors = volumeInfo.getJSONArray("authors").toList().stream()
-                            .map(authorName -> (String) authorName)
-                            .collect(Collectors.toList());
+                        .map(authorName -> (String) authorName)
+                        .collect(Collectors.toList());
                     book.setAuthors(String.join("; ", authors));
                 }
 
-                if(!volumeInfo.has("industryIdentifiers")) continue;
+                if (!volumeInfo.has("industryIdentifiers")) continue;
                 JSONArray industryIdentifiers = volumeInfo.getJSONArray("industryIdentifiers");
                 for (int isbnIndex = 0; isbnIndex < industryIdentifiers.length(); isbnIndex++) {
                     if (book.getISBN10() != null && book.getISBN13() != null) break;
@@ -84,16 +81,16 @@ public class GoogleBookAPIService {
             throw new RuntimeException(e);
         }
 
-        if(book.getTitle() != null && book.getISBN10() == null && book.getISBN13() == null) {
-            if(isbn.length() == 10) {
+        if (book.getTitle() != null && book.getISBN10() == null && book.getISBN13() == null) {
+            if (isbn.length() == 10) {
                 book.setISBN10(isbn);
             } else {
                 book.setISBN13(isbn);
             }
         }
 
-        if(book.getTitle() == null) throw new RuntimeException("Book from Google does not have a title");
-        return (Book) packageContentRepository.save(book);
+        if (book.getTitle() == null) throw new RuntimeException("Book from Google does not have a title");
+        return packageContentRepository.save(book);
     }
 
     public List<Book> queryGoogle(String title, String author) {
@@ -105,9 +102,9 @@ public class GoogleBookAPIService {
             : String.format("+inauthor:%s", author);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(String.format("https://www.googleapis.com/books/v1/volumes?q=intitle:%s%s&maxResults=10", title, inAuthor)))
-                .build();
+            .GET()
+            .uri(URI.create(String.format("https://www.googleapis.com/books/v1/volumes?q=intitle:%s%s&maxResults=10", title, inAuthor)))
+            .build();
 
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -118,20 +115,20 @@ public class GoogleBookAPIService {
                 Book book = new Book();
                 JSONObject item = items.getJSONObject(index);
 
-                if(!item.has("volumeInfo")) continue;
+                if (!item.has("volumeInfo")) continue;
                 JSONObject volumeInfo = item.getJSONObject("volumeInfo");
 
-                if(!volumeInfo.has("title")) continue;
+                if (!volumeInfo.has("title")) continue;
                 book.setTitle(volumeInfo.getString("title"));
 
-                if(volumeInfo.has("authors")) {
+                if (volumeInfo.has("authors")) {
                     List<String> authors = volumeInfo.getJSONArray("authors").toList().stream()
-                            .map(authorName -> (String) authorName)
-                            .collect(Collectors.toList());
+                        .map(authorName -> (String) authorName)
+                        .collect(Collectors.toList());
                     book.setAuthors(String.join("; ", authors));
                 }
 
-                if(!volumeInfo.has("industryIdentifiers")) continue;
+                if (!volumeInfo.has("industryIdentifiers")) continue;
                 JSONArray industryIdentifiers = volumeInfo.getJSONArray("industryIdentifiers");
                 for (int isbnIndex = 0; isbnIndex < industryIdentifiers.length(); isbnIndex++) {
                     if (book.getISBN10() != null && book.getISBN13() != null) break;
@@ -155,7 +152,7 @@ public class GoogleBookAPIService {
             return new ArrayList<>();
         }
 
-        if(books.isEmpty()) throw new RuntimeException("Did not match any book found with Google.");
+        if (books.isEmpty()) throw new RuntimeException("Did not match any book found with Google.");
         return books;
     }
 

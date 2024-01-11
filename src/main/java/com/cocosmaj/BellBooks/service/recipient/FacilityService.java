@@ -12,24 +12,24 @@ import java.util.Optional;
 @Service
 public class FacilityService {
 
+    private final FacilityRepository facilityRepository;
 
-    private FacilityRepository facilityRepository;
-
-    public FacilityService( FacilityRepository facilityRepository){
+    @SuppressWarnings("unused")
+    public FacilityService(FacilityRepository facilityRepository) {
         this.facilityRepository = facilityRepository;
     }
-    public Facility addFacility(Facility facility) {
 
+    public Facility addFacility(Facility facility) {
         return facilityRepository.save(facility);
     }
 
     public List<Facility> getAllFacilities() {
-        return (List) facilityRepository.findAllByOrderByName();
+        return facilityRepository.findAllByOrderByName();
     }
 
     public Facility getFacilityById(Long id) throws FacilityNotFoundException {
         Optional<Facility> byId = facilityRepository.findById(id);
-        if (byId.isPresent()){
+        if (byId.isPresent()) {
             return byId.get();
         } else {
             throw new FacilityNotFoundException();
@@ -42,13 +42,12 @@ public class FacilityService {
 
     }
 
-    public Facility updateFacility(Facility facility) throws FacilityNotFoundException{
+    public Facility updateFacility(Facility facility) throws FacilityNotFoundException {
         getFacilityById(facility.getId());
         return facilityRepository.save(facility);
     }
 
     public List<Facility> getFacilityByNameAndState(String name, State state) {
-        List<Facility> allByNameAndState = facilityRepository.findAllByNameAndState(name, state);
-        return allByNameAndState;
+        return facilityRepository.findAllByNameAndState(name, state);
     }
 }

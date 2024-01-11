@@ -2,7 +2,6 @@ package com.cocosmaj.BellBooks.repository.shipment;
 
 import com.cocosmaj.BellBooks.model.shipment.Book;
 import com.cocosmaj.BellBooks.model.shipment.PackageContent;
-import com.cocosmaj.BellBooks.repository.shipment.PackageContentRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

@@ -3,7 +3,6 @@ package com.cocosmaj.BellBooks.repository.shipment;
 import com.cocosmaj.BellBooks.model.shipment.Shipment;
 import org.springframework.data.repository.CrudRepository;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 

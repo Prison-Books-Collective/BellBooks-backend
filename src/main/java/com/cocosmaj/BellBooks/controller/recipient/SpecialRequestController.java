@@ -3,7 +3,6 @@ package com.cocosmaj.BellBooks.controller.recipient;
 import com.cocosmaj.BellBooks.exception.RecipientNotFoundException;
 import com.cocosmaj.BellBooks.model.recipient.SpecialRequest;
 import com.cocosmaj.BellBooks.service.recipient.SpecialRequestService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

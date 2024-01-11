@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -18,11 +19,13 @@ public class Recipient {
     @GeneratedValue
     private Long id;
 
+    @NotNull
     @Column(nullable=false)
     private String firstName;
 
     private String middleName;
 
+    @NotNull
     @Column(nullable=false)
     private String lastName;
 

@@ -31,7 +31,7 @@ public class SpecialRequestService {
         return savedSpecialRequest;
     }
 
-    public List<SpecialRequest> getAllSpecialRequests() {
-        return (List) specialRequestRepository.findAll();
-    }
+//    public List<SpecialRequest> getAllSpecialRequests() {
+//        return (List) specialRequestRepository.findAll();
+//    }
 }

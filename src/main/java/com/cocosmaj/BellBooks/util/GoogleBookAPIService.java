@@ -43,6 +43,9 @@ public class GoogleBookAPIService {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             JSONObject googleBook = new JSONObject(response.body());
+            if (googleBook.getInt("totalItems") > 0){
+
+
             JSONArray items = googleBook.getJSONArray("items");
             for (int index = 0; index < items.length(); index++) {
                 JSONObject item = items.getJSONObject(index);
@@ -77,6 +80,7 @@ public class GoogleBookAPIService {
                     }
                 }
             }
+            }
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -89,7 +93,7 @@ public class GoogleBookAPIService {
             }
         }
 
-        if (book.getTitle() == null) throw new RuntimeException("Book from Google does not have a title");
+        if (book.getTitle() == null) throw new RuntimeException("Book from Google does not have complete data.");
         return packageContentRepository.save(book);
     }
 
@@ -110,41 +114,44 @@ public class GoogleBookAPIService {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             JSONObject googleBooks = new JSONObject(response.body());
-            JSONArray items = googleBooks.getJSONArray("items");
-            for (int index = 0; index < items.length(); index++) {
-                Book book = new Book();
-                JSONObject item = items.getJSONObject(index);
+            if (googleBooks.getInt("totalItems") > 0) {
 
-                if (!item.has("volumeInfo")) continue;
-                JSONObject volumeInfo = item.getJSONObject("volumeInfo");
+                JSONArray items = googleBooks.getJSONArray("items");
+                for (int index = 0; index < items.length(); index++) {
+                    Book book = new Book();
+                    JSONObject item = items.getJSONObject(index);
 
-                if (!volumeInfo.has("title")) continue;
-                book.setTitle(volumeInfo.getString("title"));
+                    if (!item.has("volumeInfo")) continue;
+                    JSONObject volumeInfo = item.getJSONObject("volumeInfo");
 
-                if (volumeInfo.has("authors")) {
-                    List<String> authors = volumeInfo.getJSONArray("authors").toList().stream()
-                        .map(authorName -> (String) authorName)
-                        .collect(Collectors.toList());
-                    book.setAuthors(String.join("; ", authors));
-                }
+                    if (!volumeInfo.has("title")) continue;
+                    book.setTitle(volumeInfo.getString("title"));
 
-                if (!volumeInfo.has("industryIdentifiers")) continue;
-                JSONArray industryIdentifiers = volumeInfo.getJSONArray("industryIdentifiers");
-                for (int isbnIndex = 0; isbnIndex < industryIdentifiers.length(); isbnIndex++) {
-                    if (book.getISBN10() != null && book.getISBN13() != null) break;
-
-                    JSONObject identifier = industryIdentifiers.getJSONObject(isbnIndex);
-
-                    if (book.getISBN10() == null && identifier.has("identifier") && identifier.has("type") && identifier.getString("type").equals("ISBN_10")) {
-                        String googleIsbn = identifier.getString("identifier").replaceAll("-", "");
-                        book.setISBN10(googleIsbn);
+                    if (volumeInfo.has("authors")) {
+                        List<String> authors = volumeInfo.getJSONArray("authors").toList().stream()
+                                .map(authorName -> (String) authorName)
+                                .collect(Collectors.toList());
+                        book.setAuthors(String.join("; ", authors));
                     }
-                    if (book.getISBN13() == null && identifier.has("identifier") && identifier.has("type") && identifier.getString("type").equals("ISBN_13")) {
-                        String googleIsbn = identifier.getString("identifier").replaceAll("-", "");
-                        book.setISBN13(googleIsbn);
+
+                    if (!volumeInfo.has("industryIdentifiers")) continue;
+                    JSONArray industryIdentifiers = volumeInfo.getJSONArray("industryIdentifiers");
+                    for (int isbnIndex = 0; isbnIndex < industryIdentifiers.length(); isbnIndex++) {
+                        if (book.getISBN10() != null && book.getISBN13() != null) break;
+
+                        JSONObject identifier = industryIdentifiers.getJSONObject(isbnIndex);
+
+                        if (book.getISBN10() == null && identifier.has("identifier") && identifier.has("type") && identifier.getString("type").equals("ISBN_10")) {
+                            String googleIsbn = identifier.getString("identifier").replaceAll("-", "");
+                            book.setISBN10(googleIsbn);
+                        }
+                        if (book.getISBN13() == null && identifier.has("identifier") && identifier.has("type") && identifier.getString("type").equals("ISBN_13")) {
+                            String googleIsbn = identifier.getString("identifier").replaceAll("-", "");
+                            book.setISBN13(googleIsbn);
+                        }
                     }
+                    books.add(book);
                 }
-                books.add(book);
             }
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);

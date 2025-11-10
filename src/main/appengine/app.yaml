@@ -1,7 +1,7 @@
-runtime: java11
+runtime: java17
 env: standard
 runtime_config:
-  jdk: openjdk11
+  jdk: openjdk17
 handlers:
   - url: /.*
     script: this field is required, but ignored

@@ -18,6 +18,11 @@ public class SpecialRequestController {
     public SpecialRequestController(SpecialRequestService specialRequestService) {
         this.specialRequestService = specialRequestService;
     }
+//
+//    @GetMapping("/getAllSpecialRequests")
+//    public ResponseEntity<List<SpecialRequest>> getAllSpecialRequests(){
+//        return ResponseEntity.ok(specialRequestService.getAllSpecialRequests());
+//    }
 
     @PostMapping("/addSpecialRequest")
     public ResponseEntity<SpecialRequest> addSpecialRequest(@RequestBody SpecialRequest specialRequest) {
@@ -26,11 +31,6 @@ public class SpecialRequestController {
         } catch (RecipientNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-    }
-
-    @GetMapping("/getAllSpecialRequests")
-    public ResponseEntity<List<SpecialRequest>> getAllSpecialRequests(){
-        return ResponseEntity.ok(specialRequestService.getAllSpecialRequests());
     }
 
     //update

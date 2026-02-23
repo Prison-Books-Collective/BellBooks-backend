@@ -1,3 +1,4 @@
+*.jar
 HELP.md
 .gradle
 **/.DS_Store

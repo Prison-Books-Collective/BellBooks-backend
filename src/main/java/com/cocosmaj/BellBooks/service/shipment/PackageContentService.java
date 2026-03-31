@@ -34,6 +34,24 @@ public class PackageContentService {
     }
 
     public PackageContent addContent(PackageContent packageContent) {
+        if (packageContent instanceof Book) {
+            Book incomingBook = (Book) packageContent;
+
+            if (!Strings.isNullOrEmpty(incomingBook.getISBN13())) {
+                Optional<Book> existingByIsbn13 = getBookByIsbn13(incomingBook.getISBN13());
+                if (existingByIsbn13.isPresent()) {
+                    return existingByIsbn13.get();
+                }
+            }
+
+            if (!Strings.isNullOrEmpty(incomingBook.getISBN10())) {
+                Optional<Book> existingByIsbn10 = getBookByIsbn10(incomingBook.getISBN10());
+                if (existingByIsbn10.isPresent()) {
+                    return existingByIsbn10.get();
+                }
+            }
+        }
+
         return this.packageContentRepository.save(packageContent);
     }
 

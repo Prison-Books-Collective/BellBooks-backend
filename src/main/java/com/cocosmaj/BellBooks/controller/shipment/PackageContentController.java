@@ -43,7 +43,7 @@ public class PackageContentController {
             Optional<Book> bookByIsbn10 = getBookByIsbn10(isbn);
             if (bookByIsbn10.isPresent()) {
                 if (bookByIsbn10.get().getId() == null) {
-                    return new ResponseEntity<>(bookByIsbn10.get(), HttpStatus.EXPECTATION_FAILED);
+                    return new ResponseEntity<>(bookByIsbn10.get(), HttpStatus.CREATED);
                 }
                 return ResponseEntity.ok(bookByIsbn10.get());
             }
@@ -51,7 +51,7 @@ public class PackageContentController {
             Optional<Book> bookByIsbn13 = getBookByIsbn13(isbn);
             if (bookByIsbn13.isPresent()) {
                 if (bookByIsbn13.get().getId() == null) {
-                    return new ResponseEntity<>(bookByIsbn13.get(), HttpStatus.EXPECTATION_FAILED);
+                    return new ResponseEntity<>(bookByIsbn13.get(), HttpStatus.CREATED);
                 }
                 return ResponseEntity.ok(bookByIsbn13.get());
             }

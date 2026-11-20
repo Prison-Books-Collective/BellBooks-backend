@@ -37,3 +37,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Secrets ###
+src/main/appengine/db-credentials.yaml

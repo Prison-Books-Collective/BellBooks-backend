@@ -7,3 +7,9 @@ handlers:
     script: this field is required, but ignored
 manual_scaling:
   instances: 1
+
+# DB_USER / DB_PASS for the Cloud SQL app user are read from db-credentials.yaml next to this file.
+# That file is gitignored and required for deploys: copy db-credentials.example.yaml to
+# db-credentials.yaml and fill it in before running `gcloud app deploy`.
+includes:
+  - db-credentials.yaml

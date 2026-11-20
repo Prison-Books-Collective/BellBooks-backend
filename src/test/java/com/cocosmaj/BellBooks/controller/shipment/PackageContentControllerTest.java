@@ -71,7 +71,7 @@ class PackageContentControllerTest {
         }
 
         @Test
-        void returns417_whenIsbn10NotInDbAndGoogleReturnsBookWithoutId() throws Exception {
+        void returns201_whenIsbn10NotInDbAndGoogleReturnsBookWithoutId() throws Exception {
             Book googleBook = new Book();
             googleBook.setTitle("Google Book");
 
@@ -79,12 +79,12 @@ class PackageContentControllerTest {
             when(googleBookAPIService.queryGoogle("1234567890")).thenReturn(googleBook);
 
             mockMvc.perform(get("/getBookByISBN").param("isbn", "1234567890"))
-                .andExpect(status().is(417))
+                .andExpect(status().is(201))
                 .andExpect(jsonPath("$.title").value("Google Book"));
         }
 
         @Test
-        void returns417_whenIsbn13NotInDbAndGoogleReturnsBookWithoutId() throws Exception {
+        void returns201_whenIsbn13NotInDbAndGoogleReturnsBookWithoutId() throws Exception {
             Book googleBook = new Book();
             googleBook.setTitle("Google Book");
 
@@ -92,7 +92,7 @@ class PackageContentControllerTest {
             when(googleBookAPIService.queryGoogle("9781234567890")).thenReturn(googleBook);
 
             mockMvc.perform(get("/getBookByISBN").param("isbn", "9781234567890"))
-                .andExpect(status().is(417))
+                .andExpect(status().is(201))
                 .andExpect(jsonPath("$.title").value("Google Book"));
         }
     }
